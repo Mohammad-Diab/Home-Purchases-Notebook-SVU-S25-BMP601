@@ -1,0 +1,21 @@
+# Exclude existing non-project files
+*.pdf
+*.md
+desktop.ini
+Mobile Applications Programming
+
+# Android build outputs
+*.iml
+.gradle/
+local.properties
+.idea/
+.DS_Store
+build/
+captures/
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# Gradle wrapper (optional to exclude)
+!gradle/wrapper/gradle-wrapper.jar
