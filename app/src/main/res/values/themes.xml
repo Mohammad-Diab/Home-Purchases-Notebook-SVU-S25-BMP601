@@ -1,9 +1,77 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.HomePurchases" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<resources>
+
+    <!-- ====== LIGHT MODE ====== -->
+    <style name="Theme.HomePurchases.Light.0" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/accent_light_0</item>
+        <item name="colorPrimaryDark">@color/accent_light_0</item>
+        <item name="colorAccent">@color/accent_light_0</item>
+        <item name="android:windowBackground">@color/light_background</item>
+        <item name="android:textColorPrimary">@color/light_text_primary</item>
+        <item name="android:textColorSecondary">@color/light_text_secondary</item>
     </style>
 
-    <style name="Theme.HomePurchases" parent="Base.Theme.HomePurchases" />
+    <style name="Theme.HomePurchases.Light.1" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/accent_light_1</item>
+        <item name="colorPrimaryDark">@color/accent_light_1</item>
+        <item name="colorAccent">@color/accent_light_1</item>
+        <item name="android:windowBackground">@color/light_background</item>
+        <item name="android:textColorPrimary">@color/light_text_primary</item>
+        <item name="android:textColorSecondary">@color/light_text_secondary</item>
+    </style>
+
+    <style name="Theme.HomePurchases.Light.2" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/accent_light_2</item>
+        <item name="colorPrimaryDark">@color/accent_light_2</item>
+        <item name="colorAccent">@color/accent_light_2</item>
+        <item name="android:windowBackground">@color/light_background</item>
+        <item name="android:textColorPrimary">@color/light_text_primary</item>
+        <item name="android:textColorSecondary">@color/light_text_secondary</item>
+    </style>
+
+    <style name="Theme.HomePurchases.Light.3" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/accent_light_3</item>
+        <item name="colorPrimaryDark">@color/accent_light_3</item>
+        <item name="colorAccent">@color/accent_light_3</item>
+        <item name="android:windowBackground">@color/light_background</item>
+        <item name="android:textColorPrimary">@color/light_text_primary</item>
+        <item name="android:textColorSecondary">@color/light_text_secondary</item>
+    </style>
+
+    <!-- ====== DARK MODE ====== -->
+    <style name="Theme.HomePurchases.Dark.0" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/accent_dark_0</item>
+        <item name="colorPrimaryDark">@color/dark_background</item>
+        <item name="colorAccent">@color/accent_dark_0</item>
+        <item name="android:windowBackground">@color/dark_background</item>
+        <item name="android:textColorPrimary">@color/dark_text_primary</item>
+        <item name="android:textColorSecondary">@color/dark_text_secondary</item>
+    </style>
+
+    <style name="Theme.HomePurchases.Dark.1" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/accent_dark_1</item>
+        <item name="colorPrimaryDark">@color/dark_background</item>
+        <item name="colorAccent">@color/accent_dark_1</item>
+        <item name="android:windowBackground">@color/dark_background</item>
+        <item name="android:textColorPrimary">@color/dark_text_primary</item>
+        <item name="android:textColorSecondary">@color/dark_text_secondary</item>
+    </style>
+
+    <style name="Theme.HomePurchases.Dark.2" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/accent_dark_2</item>
+        <item name="colorPrimaryDark">@color/dark_background</item>
+        <item name="colorAccent">@color/accent_dark_2</item>
+        <item name="android:windowBackground">@color/dark_background</item>
+        <item name="android:textColorPrimary">@color/dark_text_primary</item>
+        <item name="android:textColorSecondary">@color/dark_text_secondary</item>
+    </style>
+
+    <style name="Theme.HomePurchases.Dark.3" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/accent_dark_3</item>
+        <item name="colorPrimaryDark">@color/dark_background</item>
+        <item name="colorAccent">@color/accent_dark_3</item>
+        <item name="android:windowBackground">@color/dark_background</item>
+        <item name="android:textColorPrimary">@color/dark_text_primary</item>
+        <item name="android:textColorSecondary">@color/dark_text_secondary</item>
+    </style>
+
 </resources>
