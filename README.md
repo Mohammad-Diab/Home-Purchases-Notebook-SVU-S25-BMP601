@@ -31,8 +31,12 @@ An Android app (Java) for tracking daily home purchases with budget management, 
 ## License
 
 See [LICENSE](LICENSE) file.
-This project is for learning and reference only. Do not submit as academic work.
 
-## Author
+> This is my personal academic project. If you're a student, use it to learn from — not to submit.
 
-Mohammad Diab
+## Team
+
+| Role | Name |
+|---|---|
+| Developer | Mohammad Diab |
+| UI/UX Designer | Mohammad Zaid Al-Nahhas |
