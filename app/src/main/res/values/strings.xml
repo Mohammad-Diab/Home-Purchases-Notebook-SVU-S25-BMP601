@@ -1,3 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Home Purchases</string>
+    <string name="app_name">دفتر المشتريات المنزلية</string>
+
+    <!-- Bottom nav tabs -->
+    <string name="tab_home">الرئيسية</string>
+    <string name="tab_purchases">المشتريات</string>
+    <string name="tab_settings">الإعدادات</string>
+
+    <!-- Home fragment -->
+    <string name="home_current_period_spend">إنفاق الفترة الحالية</string>
+    <string name="home_total_ever">إجمالي الإنفاق</string>
+    <string name="home_last_period">الفترة الماضية</string>
+    <string name="home_recent_purchases">آخر المشتريات</string>
+    <string name="home_view_all_stats">عرض كل الإحصائيات</string>
+    <string name="home_no_budget_set">لم يتم تحديد ميزانية</string>
+    <string name="home_empty">لا توجد مشتريات بعد.\nأضف أول مشترى لك!</string>
+
+    <!-- Purchases fragment -->
+    <string name="purchases_title">المشتريات</string>
+    <string name="search_hint">بحث عن منتج…</string>
+    <string name="filter">تصفية</string>
+    <string name="empty_purchases">لا توجد مشتريات بعد</string>
+    <string name="empty_filtered">لا توجد نتائج مطابقة</string>
+
+    <!-- Add/Edit fragment -->
+    <string name="add_purchase">إضافة مشترى</string>
+    <string name="edit_purchase">تعديل مشترى</string>
+    <string name="label_item_name">اسم المنتج</string>
+    <string name="label_category">الفئة</string>
+    <string name="label_price">السعر</string>
+    <string name="label_quantity">الكمية</string>
+    <string name="label_date">تاريخ الشراء</string>
+    <string name="label_notes">ملاحظات (اختياري)</string>
+    <string name="label_total_cost">التكلفة الإجمالية</string>
+    <string name="btn_save">حفظ</string>
+    <string name="btn_select_date">اختر التاريخ</string>
+
+    <!-- Validation -->
+    <string name="error_item_name_required">يرجى إدخال اسم المنتج</string>
+    <string name="error_price_invalid">يرجى إدخال سعر صحيح</string>
+    <string name="error_quantity_invalid">يرجى إدخال كمية صحيحة</string>
+    <string name="error_category_required">يرجى اختيار فئة</string>
+
+    <!-- Toast messages -->
+    <string name="purchase_added">تمت الإضافة بنجاح</string>
+    <string name="purchase_updated">تم التعديل بنجاح</string>
+    <string name="purchase_deleted">تم الحذف</string>
+
+    <!-- Delete confirmation -->
+    <string name="dialog_delete_title">تأكيد الحذف</string>
+    <string name="dialog_delete_message">هل أنت متأكد من حذف هذا المشترى؟</string>
+    <string name="btn_confirm">تأكيد</string>
+    <string name="btn_cancel">إلغاء</string>
+
+    <!-- Statistics fragment -->
+    <string name="statistics_title">الإحصائيات</string>
+    <string name="stats_total_expenses">إجمالي الإنفاق</string>
+    <string name="stats_by_category">الإنفاق حسب الفئة</string>
+    <string name="stats_no_data">لا توجد بيانات كافية</string>
+
+    <!-- Filters -->
+    <string name="filter_by_category">تصفية حسب الفئة</string>
+    <string name="filter_by_date">تصفية حسب التاريخ</string>
+    <string name="filter_from_date">من تاريخ</string>
+    <string name="filter_to_date">إلى تاريخ</string>
+    <string name="filter_apply">تطبيق</string>
+    <string name="filter_clear">مسح التصفية</string>
+    <string name="filter_all">عرض الكل</string>
+
+    <!-- Settings fragment -->
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_theme_section">المظهر</string>
+    <string name="settings_mode_light">الوضع الفاتح</string>
+    <string name="settings_mode_dark">الوضع الداكن</string>
+    <string name="settings_accent_color">لون التمييز</string>
+    <string name="settings_budget_section">الميزانية</string>
+    <string name="settings_budget_amount">مبلغ الميزانية</string>
+    <string name="settings_budget_period">الفترة</string>
+    <string name="settings_budget_reset_day">يوم الإعادة</string>
+    <string name="settings_currency_section">العملة</string>
+    <string name="settings_currency_new">ل.س جديدة</string>
+    <string name="settings_currency_old">ل.س قديمة</string>
+    <string name="settings_manage_categories">إدارة الفئات</string>
+
+    <!-- Budget periods -->
+    <string name="period_daily">يومي</string>
+    <string name="period_weekly">أسبوعي</string>
+    <string name="period_monthly">شهري</string>
+
+    <!-- Week days (for weekly budget reset) -->
+    <string-array name="week_days">
+        <item>السبت</item>
+        <item>الأحد</item>
+        <item>الاثنين</item>
+        <item>الثلاثاء</item>
+        <item>الأربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+    </string-array>
+
+    <!-- Theme accent names -->
+    <string-array name="accent_names_light">
+        <item>أزرق المحيط</item>
+        <item>أخضر الطبيعة</item>
+        <item>برتقالي الغروب</item>
+        <item>بنفسجي عميق</item>
+    </string-array>
+
+    <string-array name="accent_names_dark">
+        <item>أزرق سماوي</item>
+        <item>أخضر فيروزي</item>
+        <item>ذهبي كهرماني</item>
+        <item>بنفسجي ناعم</item>
+    </string-array>
+
+    <!-- Category management -->
+    <string name="categories_title">إدارة الفئات</string>
+    <string name="add_category">إضافة فئة</string>
+    <string name="edit_category">تعديل فئة</string>
+    <string name="label_category_name">اسم الفئة</string>
+    <string name="label_category_description">الوصف (اختياري)</string>
+    <string name="label_pick_icon">اختر أيقونة</string>
+    <string name="category_added">تمت إضافة الفئة</string>
+    <string name="category_updated">تم تعديل الفئة</string>
+    <string name="category_deleted">تم حذف الفئة</string>
+    <string name="category_has_purchases">لا يمكن حذف فئة تحتوي على مشتريات</string>
+    <string name="empty_categories">لا توجد فئات</string>
 </resources>
