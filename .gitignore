@@ -1,6 +1,8 @@
 # Existing non-project files
 *.pdf
-*.md
+PLAN.md
+CLAUDE.md
+TASKS.md
 desktop.ini
 Mobile Applications Programming
 
