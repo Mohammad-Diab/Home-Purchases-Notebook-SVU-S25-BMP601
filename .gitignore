@@ -1,4 +1,4 @@
-# Exclude existing non-project files
+# Existing non-project files
 *.pdf
 *.md
 desktop.ini
@@ -6,16 +6,25 @@ Mobile Applications Programming
 
 # Android build outputs
 *.iml
-.gradle/
+.gradle
 local.properties
-.idea/
+.idea/caches
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
 .DS_Store
-build/
-captures/
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# APK / signing
 *.apk
 *.aab
 *.keystore
 *.jks
 
-# Gradle wrapper (optional to exclude)
+# Keep gradle wrapper
 !gradle/wrapper/gradle-wrapper.jar
