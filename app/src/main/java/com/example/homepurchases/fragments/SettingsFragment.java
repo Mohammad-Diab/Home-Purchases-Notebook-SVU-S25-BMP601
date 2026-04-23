@@ -40,7 +40,7 @@ import java.util.Locale;
 public class SettingsFragment extends Fragment {
 
     private SwitchCompat switchDarkMode;
-    private TextView tvModeLabel, tvAccentName;
+    private TextView tvModeLabel, tvAccentName, tvBudgetLocked;
     private AppCompatImageView[] accentSwatches;
     private TextInputEditText etBudgetAmount;
     private Spinner spinnerPeriod, spinnerResetDay;
@@ -82,6 +82,7 @@ public class SettingsFragment extends Fragment {
         tvModeLabel     = view.findViewById(R.id.tv_mode_label);
         tvAccentName    = view.findViewById(R.id.tv_accent_name);
         etBudgetAmount  = view.findViewById(R.id.et_budget_amount);
+        tvBudgetLocked  = view.findViewById(R.id.tv_budget_locked);
         spinnerPeriod   = view.findViewById(R.id.spinner_period);
         spinnerResetDay = view.findViewById(R.id.spinner_reset_day);
         layoutResetDay  = view.findViewById(R.id.layout_reset_day);
@@ -112,6 +113,8 @@ public class SettingsFragment extends Fragment {
         if (budgetNewSP > 0) {
             double display = CurrencyFormatter.toDisplayAmount(budgetNewSP, requireContext());
             etBudgetAmount.setText(String.valueOf(display));
+            etBudgetAmount.setEnabled(false);
+            tvBudgetLocked.setVisibility(View.VISIBLE);
         }
 
         // Period spinner
@@ -253,18 +256,36 @@ public class SettingsFragment extends Fragment {
                         })
                         .setNegativeButton(R.string.btn_cancel, null)
                         .show());
+
+        // Reset all data
+        view.findViewById(R.id.btn_reset_data).setOnClickListener(v ->
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.reset_confirm_title)
+                        .setMessage(R.string.reset_confirm_message)
+                        .setPositiveButton(R.string.btn_confirm, (d, w) -> {
+                            new com.example.homepurchases.database.PurchaseDAO(requireContext())
+                                    .deleteAllPurchases();
+                            Toast.makeText(requireContext(),
+                                    R.string.reset_success, Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton(R.string.btn_cancel, null)
+                        .show());
     }
 
     private void saveBudgetAmount() {
+        // Once a budget is set it cannot be changed
+        if (SettingsManager.getBudgetAmount(requireContext()) > 0) return;
+
         String text = etBudgetAmount.getText().toString().trim();
-        if (text.isEmpty()) {
-            SettingsManager.saveBudgetAmount(requireContext(), 0f);
-            return;
-        }
+        if (text.isEmpty()) return;
+
         try {
             double displayAmount = Double.parseDouble(text);
+            if (displayAmount <= 0) return;
             double newSP = CurrencyFormatter.toStorageAmount(displayAmount, requireContext());
             SettingsManager.saveBudgetAmount(requireContext(), (float) newSP);
+            etBudgetAmount.setEnabled(false);
+            tvBudgetLocked.setVisibility(View.VISIBLE);
         } catch (NumberFormatException e) {
             Log.e("SettingsFragment", "invalid budget input: " + e.getMessage());
         }

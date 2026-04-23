@@ -156,7 +156,7 @@
                     android:id="@+id/layout_budget_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="4dp"
                     android:hint="@string/settings_budget_amount">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -167,6 +167,17 @@
                         android:maxLines="1" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_budget_locked"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:drawablePadding="4dp"
+                    android:text="@string/budget_locked_hint"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
                 <!-- Budget period -->
                 <TextView
@@ -321,8 +332,17 @@
                     android:id="@+id/btn_seed_test_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/btn_seed_test_data"
                     android:backgroundTint="?attr/colorPrimary"
+                    android:textColor="@android:color/white" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_reset_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_reset_data"
+                    android:backgroundTint="@color/error_light"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>

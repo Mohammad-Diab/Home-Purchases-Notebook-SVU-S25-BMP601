@@ -138,6 +138,12 @@
     <string name="seed_data_exists">البيانات موجودة بالفعل — أضف أكثر من ٢٠ مشترى</string>
     <string name="seed_success">تمت إضافة البيانات التجريبية بنجاح</string>
 
+    <!-- Reset data -->
+    <string name="btn_reset_data">مسح جميع البيانات</string>
+    <string name="reset_confirm_title">تأكيد المسح</string>
+    <string name="reset_confirm_message">سيتم حذف جميع المشتريات بشكل نهائي. هذا الإجراء لا يمكن التراجع عنه. هل تريد المتابعة؟</string>
+    <string name="reset_success">تم مسح جميع البيانات</string>
+
     <!-- Budget lock -->
     <string name="budget_locked_hint">الميزانية مقفلة بعد التعيين — لا يمكن تغييرها</string>
 </resources>

@@ -213,6 +213,15 @@ public class PurchaseDAO {
         }
     }
 
+    public int deleteAllPurchases() {
+        try {
+            return db.delete(DatabaseHelper.TABLE_PURCHASES, null, null);
+        } catch (Exception e) {
+            Log.e(TAG, "deleteAllPurchases failed: " + e.getMessage());
+            return 0;
+        }
+    }
+
     public int getPurchaseCount() {
         try {
             Cursor cursor = db.rawQuery(
