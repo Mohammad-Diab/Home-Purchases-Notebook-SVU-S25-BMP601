@@ -94,6 +94,42 @@ public class BudgetManager {
         return SettingsManager.getBudgetAmount(context) > 0;
     }
 
+    public static long getPreviousPeriodStart(Context context) {
+        BudgetPeriod period = BudgetPeriod.fromValue(SettingsManager.getBudgetPeriod(context));
+        int resetDay = SettingsManager.getBudgetResetDay(context);
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(getCurrentPeriodStart(context));
+
+        switch (period) {
+            case DAILY:
+                cal.add(Calendar.DAY_OF_YEAR, -1);
+                break;
+            case WEEKLY:
+                // walk back from one day before current period start to find previous reset weekday
+                int targetDay = resetDayToCalendar(resetDay);
+                cal.add(Calendar.DAY_OF_YEAR, -1);
+                while (cal.get(Calendar.DAY_OF_WEEK) != targetDay) {
+                    cal.add(Calendar.DAY_OF_YEAR, -1);
+                }
+                startOfDay(cal);
+                break;
+            case MONTHLY:
+                // go back one month then re-apply reset day capping (same logic as getCurrentPeriodStart)
+                cal.add(Calendar.MONTH, -1);
+                int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+                cal.set(Calendar.DAY_OF_MONTH, Math.min(resetDay, lastDay));
+                startOfDay(cal);
+                break;
+        }
+        return cal.getTimeInMillis();
+    }
+
+    public static double getSpentLastPeriod(Context context) {
+        long start = getPreviousPeriodStart(context);
+        long end   = getCurrentPeriodStart(context) - 1;
+        return new PurchaseDAO(context).getTotalBetween(start, end);
+    }
+
     public static boolean isOverBudget(Context context) {
         if (!isBudgetSet(context)) return false;
         return getSpentThisPeriod(context) > getBudgetAmount(context);

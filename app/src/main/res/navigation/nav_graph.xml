@@ -11,6 +11,9 @@
         <action
             android:id="@+id/action_home_to_statistics"
             app:destination="@id/statisticsFragment" />
+        <action
+            android:id="@+id/action_home_to_addEdit"
+            app:destination="@id/addEditFragment" />
     </fragment>
 
     <fragment

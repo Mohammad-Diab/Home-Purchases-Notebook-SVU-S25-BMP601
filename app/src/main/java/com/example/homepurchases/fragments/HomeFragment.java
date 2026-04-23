@@ -76,6 +76,10 @@ public class HomeFragment extends Fragment {
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_home_to_statistics));
 
+        view.findViewById(R.id.fab_add).setOnClickListener(v ->
+                Navigation.findNavController(requireView())
+                        .navigate(R.id.action_home_to_addEdit));
+
         loadData();
     }
 
@@ -145,18 +149,7 @@ public class HomeFragment extends Fragment {
         double totalEver = purchaseDAO.getTotalExpenses();
         tvTotalEver.setText(CurrencyFormatter.format(totalEver, requireContext()));
 
-        long currentStart = BudgetManager.getCurrentPeriodStart(requireContext());
-        long prevEnd      = currentStart - 1;
-        int periodVal     = SettingsManager.getBudgetPeriod(requireContext());
-        long prevStart;
-        if (periodVal == 0) {
-            prevStart = prevEnd - 86_400_000L + 1;
-        } else if (periodVal == 1) {
-            prevStart = prevEnd - 7L * 86_400_000L + 1;
-        } else {
-            prevStart = prevEnd - 30L * 86_400_000L + 1;
-        }
-        double lastPeriod = purchaseDAO.getTotalBetween(prevStart, prevEnd);
+        double lastPeriod = BudgetManager.getSpentLastPeriod(requireContext());
         tvLastPeriod.setText(CurrencyFormatter.format(lastPeriod, requireContext()));
     }
 

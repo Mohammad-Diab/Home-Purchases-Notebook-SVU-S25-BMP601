@@ -9,7 +9,7 @@ An Android app (Java) for tracking daily home purchases with budget management, 
 
 - Add, edit, and delete purchases
 - Organize purchases by category with custom icons
-- Budget tracking with daily / weekly / monthly periods
+- Budget tracking with daily / weekly / monthly periods; home screen shows current and previous period spend
 - Spending statistics with category breakdown
 - 2 modes (Light / Dark) × 4 accent colors = 8 theme combinations
 - Currency support: New Syrian Pound (ل.س ج) and Old Syrian Pound (ل.س ق)
