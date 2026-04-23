@@ -1,7 +1,6 @@
 package com.example.homepurchases.fragments;
 
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -112,13 +112,19 @@ public class HomeFragment extends Fragment {
                 + " / "
                 + CurrencyFormatter.format(budget, requireContext()));
 
-        TypedValue tv = new TypedValue();
+        boolean isDark = SettingsManager.getThemeMode(requireContext()) == SettingsManager.MODE_DARK;
+        int indicatorColor;
         if (BudgetManager.isOverBudget(requireContext())) {
-            requireContext().getTheme().resolveAttribute(android.R.attr.colorError, tv, true);
+            indicatorColor = ContextCompat.getColor(requireContext(),
+                    isDark ? R.color.error_dark : R.color.error_light);
         } else {
-            requireContext().getTheme().resolveAttribute(android.R.attr.colorPrimary, tv, true);
+            int accent = SettingsManager.getThemeAccent(requireContext());
+            int[] accentColors = isDark
+                    ? new int[]{R.color.accent_dark_0, R.color.accent_dark_1, R.color.accent_dark_2, R.color.accent_dark_3}
+                    : new int[]{R.color.accent_light_0, R.color.accent_light_1, R.color.accent_light_2, R.color.accent_light_3};
+            indicatorColor = ContextCompat.getColor(requireContext(), accentColors[accent]);
         }
-        progressBudget.setIndicatorColor(tv.data);
+        progressBudget.setIndicatorColor(indicatorColor);
     }
 
     private void loadStatsSection() {
