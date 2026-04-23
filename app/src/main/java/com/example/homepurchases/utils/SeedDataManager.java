@@ -40,10 +40,23 @@ public class SeedDataManager {
             6, 4, 2, 8, 2, 5, 5, 1, 2, 8, 6, 7, 7, 3, 4
     };
 
+    // Prices in New SP — calibrated at 1 USD = 130 New SP
     private static final double[] PRICES = {
-            15000, 8500, 120000, 45000, 250000,
-            22000, 9000, 75000, 180000, 35000,
-            12000, 60000, 95000, 28000, 42000
+            600,   // bread + fresh vegetables  (~$4.6/unit)
+            1500,  // laundry detergent + cleaners (~$11.5)
+            4000,  // electric fan (~$31)
+            3000,  // jeans (~$23)
+            65000, // laptop (~$500)
+            800,   // blood-pressure medication (~$6.2/unit)
+            250,   // pain relievers (~$1.9/unit)
+            5000,  // carpentry tools (~$38)
+            25000, // smart TV (~$192)
+            1200,  // summer shirts (~$9.2/unit)
+            1800,  // weekly grocery bag (~$13.8/bag)
+            1500,  // electricity bill (~$11.5)
+            3000,  // internet subscription (~$23)
+            500,   // streaming subscription (~$3.8/month)
+            800    // floor cleaner (~$6.2)
     };
 
     private static final int[] QUANTITIES = {
