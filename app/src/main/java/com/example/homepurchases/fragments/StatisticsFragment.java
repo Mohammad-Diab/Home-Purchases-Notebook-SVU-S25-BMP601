@@ -1,12 +1,14 @@
 package com.example.homepurchases.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,6 +55,15 @@ public class StatisticsFragment extends Fragment {
     }
 
     private void loadStatistics() {
+        try {
+        loadStatisticsInternal();
+        } catch (Exception e) {
+            Log.e("StatisticsFragment", "loadStatistics failed: " + e.getMessage());
+            Toast.makeText(requireContext(), R.string.error_generic, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void loadStatisticsInternal() {
         double total = purchaseDAO.getTotalExpenses();
         tvTotalAmount.setText(CurrencyFormatter.format(total, requireContext()));
 

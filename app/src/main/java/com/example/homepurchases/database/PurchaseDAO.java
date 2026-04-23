@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.homepurchases.models.Purchase;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 
 public class PurchaseDAO {
 
+    private static final String TAG = "PurchaseDAO";
     private final SQLiteDatabase db;
 
     public PurchaseDAO(Context context) {
@@ -21,129 +23,208 @@ public class PurchaseDAO {
     }
 
     public long insertPurchase(Purchase purchase) {
-        ContentValues cv = buildContentValues(purchase);
-        return db.insert(DatabaseHelper.TABLE_PURCHASES, null, cv);
+        try {
+            ContentValues cv = buildContentValues(purchase);
+            return db.insert(DatabaseHelper.TABLE_PURCHASES, null, cv);
+        } catch (Exception e) {
+            Log.e(TAG, "insertPurchase failed: " + e.getMessage());
+            return -1;
+        }
     }
 
     public int updatePurchase(Purchase purchase) {
-        ContentValues cv = buildContentValues(purchase);
-        return db.update(DatabaseHelper.TABLE_PURCHASES, cv,
-                DatabaseHelper.COL_P_ID + "=?",
-                new String[]{String.valueOf(purchase.getId())});
+        try {
+            ContentValues cv = buildContentValues(purchase);
+            return db.update(DatabaseHelper.TABLE_PURCHASES, cv,
+                    DatabaseHelper.COL_P_ID + "=?",
+                    new String[]{String.valueOf(purchase.getId())});
+        } catch (Exception e) {
+            Log.e(TAG, "updatePurchase failed: " + e.getMessage());
+            return 0;
+        }
     }
 
     public int deletePurchase(int id) {
-        return db.delete(DatabaseHelper.TABLE_PURCHASES,
-                DatabaseHelper.COL_P_ID + "=?",
-                new String[]{String.valueOf(id)});
+        try {
+            return db.delete(DatabaseHelper.TABLE_PURCHASES,
+                    DatabaseHelper.COL_P_ID + "=?",
+                    new String[]{String.valueOf(id)});
+        } catch (Exception e) {
+            Log.e(TAG, "deletePurchase failed: " + e.getMessage());
+            return 0;
+        }
     }
 
     public List<Purchase> getAllPurchases() {
-        return queryPurchases(null, null);
+        try {
+            return queryPurchases(null, null);
+        } catch (Exception e) {
+            Log.e(TAG, "getAllPurchases failed: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     public Purchase getPurchaseById(int id) {
-        Cursor cursor = db.query(DatabaseHelper.TABLE_PURCHASES,
-                null,
-                DatabaseHelper.COL_P_ID + "=?",
-                new String[]{String.valueOf(id)},
-                null, null, null);
-        Purchase purchase = null;
-        if (cursor.moveToFirst()) {
-            purchase = cursorToPurchase(cursor);
+        try {
+            Cursor cursor = db.query(DatabaseHelper.TABLE_PURCHASES,
+                    null,
+                    DatabaseHelper.COL_P_ID + "=?",
+                    new String[]{String.valueOf(id)},
+                    null, null, null);
+            Purchase purchase = null;
+            if (cursor.moveToFirst()) {
+                purchase = cursorToPurchase(cursor);
+            }
+            cursor.close();
+            return purchase;
+        } catch (Exception e) {
+            Log.e(TAG, "getPurchaseById failed: " + e.getMessage());
+            return null;
         }
-        cursor.close();
-        return purchase;
     }
 
     public List<Purchase> getPurchasesByCategory(int categoryId) {
-        return queryPurchases(
-                DatabaseHelper.COL_P_CATEGORY_ID + "=?",
-                new String[]{String.valueOf(categoryId)});
+        try {
+            return queryPurchases(
+                    DatabaseHelper.COL_P_CATEGORY_ID + "=?",
+                    new String[]{String.valueOf(categoryId)});
+        } catch (Exception e) {
+            Log.e(TAG, "getPurchasesByCategory failed: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     public List<Purchase> getPurchasesByDateRange(long startDate, long endDate) {
-        return queryPurchases(
-                DatabaseHelper.COL_P_DATE + " BETWEEN ? AND ?",
-                new String[]{String.valueOf(startDate), String.valueOf(endDate)});
+        try {
+            return queryPurchases(
+                    DatabaseHelper.COL_P_DATE + " BETWEEN ? AND ?",
+                    new String[]{String.valueOf(startDate), String.valueOf(endDate)});
+        } catch (Exception e) {
+            Log.e(TAG, "getPurchasesByDateRange failed: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     public List<Purchase> searchPurchases(String query) {
-        return queryPurchases(
-                DatabaseHelper.COL_P_ITEM_NAME + " LIKE ?",
-                new String[]{"%" + query + "%"});
+        try {
+            return queryPurchases(
+                    DatabaseHelper.COL_P_ITEM_NAME + " LIKE ?",
+                    new String[]{"%" + query + "%"});
+        } catch (Exception e) {
+            Log.e(TAG, "searchPurchases failed: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     public double getTotalExpenses() {
-        Cursor cursor = db.rawQuery(
-                "SELECT SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") FROM " +
-                DatabaseHelper.TABLE_PURCHASES, null);
-        double total = 0;
-        if (cursor.moveToFirst() && !cursor.isNull(0)) {
-            total = cursor.getDouble(0);
+        try {
+            Cursor cursor = db.rawQuery(
+                    "SELECT SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") FROM " +
+                    DatabaseHelper.TABLE_PURCHASES, null);
+            double total = 0;
+            if (cursor.moveToFirst() && !cursor.isNull(0)) {
+                total = cursor.getDouble(0);
+            }
+            cursor.close();
+            return total;
+        } catch (Exception e) {
+            Log.e(TAG, "getTotalExpenses failed: " + e.getMessage());
+            return 0.0;
         }
-        cursor.close();
-        return total;
     }
 
     public double getTotalBetween(long startDate, long endDate) {
-        Cursor cursor = db.rawQuery(
-                "SELECT SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") FROM " +
-                DatabaseHelper.TABLE_PURCHASES +
-                " WHERE " + DatabaseHelper.COL_P_DATE + " BETWEEN ? AND ?",
-                new String[]{String.valueOf(startDate), String.valueOf(endDate)});
-        double total = 0;
-        if (cursor.moveToFirst() && !cursor.isNull(0)) {
-            total = cursor.getDouble(0);
+        try {
+            Cursor cursor = db.rawQuery(
+                    "SELECT SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") FROM " +
+                    DatabaseHelper.TABLE_PURCHASES +
+                    " WHERE " + DatabaseHelper.COL_P_DATE + " BETWEEN ? AND ?",
+                    new String[]{String.valueOf(startDate), String.valueOf(endDate)});
+            double total = 0;
+            if (cursor.moveToFirst() && !cursor.isNull(0)) {
+                total = cursor.getDouble(0);
+            }
+            cursor.close();
+            return total;
+        } catch (Exception e) {
+            Log.e(TAG, "getTotalBetween failed: " + e.getMessage());
+            return 0.0;
         }
-        cursor.close();
-        return total;
     }
 
     public Map<Integer, Double> getExpensesByCategory() {
-        Map<Integer, Double> map = new LinkedHashMap<>();
-        Cursor cursor = db.rawQuery(
-                "SELECT " + DatabaseHelper.COL_P_CATEGORY_ID +
-                ", SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") FROM " +
-                DatabaseHelper.TABLE_PURCHASES +
-                " GROUP BY " + DatabaseHelper.COL_P_CATEGORY_ID +
-                " ORDER BY SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") DESC",
-                null);
-        while (cursor.moveToNext()) {
-            map.put(cursor.getInt(0), cursor.getDouble(1));
+        try {
+            Map<Integer, Double> map = new LinkedHashMap<>();
+            Cursor cursor = db.rawQuery(
+                    "SELECT " + DatabaseHelper.COL_P_CATEGORY_ID +
+                    ", SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") FROM " +
+                    DatabaseHelper.TABLE_PURCHASES +
+                    " GROUP BY " + DatabaseHelper.COL_P_CATEGORY_ID +
+                    " ORDER BY SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") DESC",
+                    null);
+            while (cursor.moveToNext()) {
+                map.put(cursor.getInt(0), cursor.getDouble(1));
+            }
+            cursor.close();
+            return map;
+        } catch (Exception e) {
+            Log.e(TAG, "getExpensesByCategory failed: " + e.getMessage());
+            return new LinkedHashMap<>();
         }
-        cursor.close();
-        return map;
     }
 
     public Map<Integer, Double> getExpensesByCategoryBetween(long startDate, long endDate) {
-        Map<Integer, Double> map = new LinkedHashMap<>();
-        Cursor cursor = db.rawQuery(
-                "SELECT " + DatabaseHelper.COL_P_CATEGORY_ID +
-                ", SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") FROM " +
-                DatabaseHelper.TABLE_PURCHASES +
-                " WHERE " + DatabaseHelper.COL_P_DATE + " BETWEEN ? AND ?" +
-                " GROUP BY " + DatabaseHelper.COL_P_CATEGORY_ID +
-                " ORDER BY SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") DESC",
-                new String[]{String.valueOf(startDate), String.valueOf(endDate)});
-        while (cursor.moveToNext()) {
-            map.put(cursor.getInt(0), cursor.getDouble(1));
+        try {
+            Map<Integer, Double> map = new LinkedHashMap<>();
+            Cursor cursor = db.rawQuery(
+                    "SELECT " + DatabaseHelper.COL_P_CATEGORY_ID +
+                    ", SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") FROM " +
+                    DatabaseHelper.TABLE_PURCHASES +
+                    " WHERE " + DatabaseHelper.COL_P_DATE + " BETWEEN ? AND ?" +
+                    " GROUP BY " + DatabaseHelper.COL_P_CATEGORY_ID +
+                    " ORDER BY SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") DESC",
+                    new String[]{String.valueOf(startDate), String.valueOf(endDate)});
+            while (cursor.moveToNext()) {
+                map.put(cursor.getInt(0), cursor.getDouble(1));
+            }
+            cursor.close();
+            return map;
+        } catch (Exception e) {
+            Log.e(TAG, "getExpensesByCategoryBetween failed: " + e.getMessage());
+            return new LinkedHashMap<>();
         }
-        cursor.close();
-        return map;
     }
 
     public List<Purchase> getRecentPurchases(int limit) {
-        Cursor cursor = db.query(DatabaseHelper.TABLE_PURCHASES,
-                null, null, null, null, null,
-                DatabaseHelper.COL_P_DATE + " DESC",
-                String.valueOf(limit));
-        List<Purchase> list = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            list.add(cursorToPurchase(cursor));
+        try {
+            Cursor cursor = db.query(DatabaseHelper.TABLE_PURCHASES,
+                    null, null, null, null, null,
+                    DatabaseHelper.COL_P_DATE + " DESC",
+                    String.valueOf(limit));
+            List<Purchase> list = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                list.add(cursorToPurchase(cursor));
+            }
+            cursor.close();
+            return list;
+        } catch (Exception e) {
+            Log.e(TAG, "getRecentPurchases failed: " + e.getMessage());
+            return new ArrayList<>();
         }
-        cursor.close();
-        return list;
+    }
+
+    public int getPurchaseCount() {
+        try {
+            Cursor cursor = db.rawQuery(
+                    "SELECT COUNT(*) FROM " + DatabaseHelper.TABLE_PURCHASES, null);
+            int count = 0;
+            if (cursor.moveToFirst()) count = cursor.getInt(0);
+            cursor.close();
+            return count;
+        } catch (Exception e) {
+            Log.e(TAG, "getPurchaseCount failed: " + e.getMessage());
+            return 0;
+        }
     }
 
     private List<Purchase> queryPurchases(String selection, String[] selectionArgs) {

@@ -2,6 +2,7 @@ package com.example.homepurchases.fragments;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +26,7 @@ import androidx.navigation.Navigation;
 
 import com.example.homepurchases.R;
 import com.example.homepurchases.utils.CurrencyFormatter;
+import com.example.homepurchases.utils.SeedDataManager;
 import com.example.homepurchases.utils.SettingsManager;
 import com.example.homepurchases.utils.ThemeManager;
 import com.google.android.material.textfield.TextInputEditText;
@@ -236,6 +239,20 @@ public class SettingsFragment extends Fragment {
         view.findViewById(R.id.btn_manage_categories).setOnClickListener(v ->
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_settings_to_categories));
+
+        // Seed test data
+        view.findViewById(R.id.btn_seed_test_data).setOnClickListener(v ->
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.seed_confirm_title)
+                        .setMessage(R.string.seed_confirm_message)
+                        .setPositiveButton(R.string.btn_confirm, (d, w) -> {
+                            boolean seeded = SeedDataManager.seedTestData(requireContext());
+                            Toast.makeText(requireContext(),
+                                    seeded ? R.string.seed_success : R.string.seed_data_exists,
+                                    Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton(R.string.btn_cancel, null)
+                        .show());
     }
 
     private void saveBudgetAmount() {
@@ -248,6 +265,8 @@ public class SettingsFragment extends Fragment {
             double displayAmount = Double.parseDouble(text);
             double newSP = CurrencyFormatter.toStorageAmount(displayAmount, requireContext());
             SettingsManager.saveBudgetAmount(requireContext(), (float) newSP);
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException e) {
+            Log.e("SettingsFragment", "invalid budget input: " + e.getMessage());
+        }
     }
 }

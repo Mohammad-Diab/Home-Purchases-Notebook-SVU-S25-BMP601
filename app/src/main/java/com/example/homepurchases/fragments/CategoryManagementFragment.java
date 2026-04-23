@@ -1,6 +1,7 @@
 package com.example.homepurchases.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,9 +69,14 @@ public class CategoryManagementFragment extends Fragment
     }
 
     private void loadCategories() {
-        List<Category> list = categoryDAO.getAllCategories();
-        adapter.updateList(list);
-        tvEmptyCategories.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
+        try {
+            List<Category> list = categoryDAO.getAllCategories();
+            adapter.updateList(list);
+            tvEmptyCategories.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
+        } catch (Exception e) {
+            Log.e("CategoryMgmtFragment", "loadCategories failed: " + e.getMessage());
+            Toast.makeText(requireContext(), R.string.error_generic, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -136,20 +142,25 @@ public class CategoryManagementFragment extends Fragment
                         layoutName.setError(getString(R.string.label_category_name));
                         return;
                     }
-                    String desc = etDesc.getText().toString().trim();
-                    Category category = new Category(
-                            existing == null ? 0 : existing.getId(),
-                            name,
-                            pickedIcon[0],
-                            desc.isEmpty() ? null : desc);
+                    try {
+                        String desc = etDesc.getText().toString().trim();
+                        Category category = new Category(
+                                existing == null ? 0 : existing.getId(),
+                                name,
+                                pickedIcon[0],
+                                desc.isEmpty() ? null : desc);
 
-                    if (existing == null) {
-                        categoryDAO.insertCategory(category);
-                    } else {
-                        categoryDAO.updateCategory(category);
+                        if (existing == null) {
+                            categoryDAO.insertCategory(category);
+                        } else {
+                            categoryDAO.updateCategory(category);
+                        }
+                        Toast.makeText(requireContext(), confirmMsg, Toast.LENGTH_SHORT).show();
+                        loadCategories();
+                    } catch (Exception e) {
+                        Log.e("CategoryMgmtFragment", "save category failed: " + e.getMessage());
+                        Toast.makeText(requireContext(), R.string.error_database, Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(requireContext(), confirmMsg, Toast.LENGTH_SHORT).show();
-                    loadCategories();
                 })
                 .setNegativeButton(R.string.btn_cancel, null)
                 .show();

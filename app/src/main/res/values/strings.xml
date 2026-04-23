@@ -126,4 +126,18 @@
     <string name="category_deleted">تم حذف الفئة</string>
     <string name="category_has_purchases">لا يمكن حذف فئة تحتوي على مشتريات</string>
     <string name="empty_categories">لا توجد فئات</string>
+
+    <!-- Error messages -->
+    <string name="error_database">حدث خطأ في قاعدة البيانات</string>
+    <string name="error_generic">حدث خطأ غير متوقع</string>
+
+    <!-- Test data seed -->
+    <string name="btn_seed_test_data">ملء بيانات تجريبية</string>
+    <string name="seed_confirm_title">ملء البيانات التجريبية</string>
+    <string name="seed_confirm_message">سيتم إضافة ١٥ مشترى تجريبياً موزعاً على جميع الفئات. هل تريد المتابعة؟</string>
+    <string name="seed_data_exists">البيانات موجودة بالفعل — أضف أكثر من ٢٠ مشترى</string>
+    <string name="seed_success">تمت إضافة البيانات التجريبية بنجاح</string>
+
+    <!-- Budget lock -->
+    <string name="budget_locked_hint">الميزانية مقفلة بعد التعيين — لا يمكن تغييرها</string>
 </resources>

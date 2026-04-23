@@ -1,6 +1,7 @@
 package com.example.homepurchases.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,22 +112,27 @@ public class PurchasesFragment extends Fragment
     }
 
     private void loadPurchases() {
-        List<Purchase> list;
-        if (!searchQuery.isEmpty()) {
-            list = purchaseDAO.searchPurchases(searchQuery);
-        } else if (filterMode == FilterMode.CATEGORY) {
-            list = purchaseDAO.getPurchasesByCategory(filteredCategoryId);
-        } else if (filterMode == FilterMode.DATE) {
-            list = purchaseDAO.getPurchasesByDateRange(filterStart, filterEnd);
-        } else {
-            list = purchaseDAO.getAllPurchases();
+        try {
+            List<Purchase> list;
+            if (!searchQuery.isEmpty()) {
+                list = purchaseDAO.searchPurchases(searchQuery);
+            } else if (filterMode == FilterMode.CATEGORY) {
+                list = purchaseDAO.getPurchasesByCategory(filteredCategoryId);
+            } else if (filterMode == FilterMode.DATE) {
+                list = purchaseDAO.getPurchasesByDateRange(filterStart, filterEnd);
+            } else {
+                list = purchaseDAO.getAllPurchases();
+            }
+
+            adapter.updateList(list);
+
+            boolean isFiltered = !searchQuery.isEmpty() || filterMode != FilterMode.NONE;
+            tvEmptyPurchases.setVisibility((!isFiltered && list.isEmpty()) ? View.VISIBLE : View.GONE);
+            tvEmptyFiltered.setVisibility((isFiltered && list.isEmpty()) ? View.VISIBLE : View.GONE);
+        } catch (Exception e) {
+            Log.e("PurchasesFragment", "loadPurchases failed: " + e.getMessage());
+            Toast.makeText(requireContext(), R.string.error_generic, Toast.LENGTH_SHORT).show();
         }
-
-        adapter.updateList(list);
-
-        boolean isFiltered = !searchQuery.isEmpty() || filterMode != FilterMode.NONE;
-        tvEmptyPurchases.setVisibility((!isFiltered && list.isEmpty()) ? View.VISIBLE : View.GONE);
-        tvEmptyFiltered.setVisibility((isFiltered && list.isEmpty()) ? View.VISIBLE : View.GONE);
     }
 
     private void showFilterMenu() {
