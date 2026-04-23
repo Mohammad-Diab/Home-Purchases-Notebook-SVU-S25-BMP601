@@ -196,11 +196,11 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setupListeners(View view) {
-        // Display mode spinner
+        // Display mode spinner — guard by value comparison (Spinner fires onItemSelected async)
         spinnerDarkMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
-                if (isInitializing) return;
+                if (SettingsManager.getThemeMode(requireContext()) == pos) return;
                 SettingsManager.saveThemeMode(requireContext(), pos);
                 ThemeManager.restartApp(requireActivity());
             }

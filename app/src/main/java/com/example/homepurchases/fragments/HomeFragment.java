@@ -24,7 +24,7 @@ import com.example.homepurchases.models.Purchase;
 import com.example.homepurchases.utils.BudgetManager;
 import com.example.homepurchases.utils.CurrencyFormatter;
 import com.example.homepurchases.utils.SettingsManager;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.example.homepurchases.views.ArcProgressView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
-    private CircularProgressIndicator progressBudget;
+    private ArcProgressView progressBudget;
     private TextView tvSpentAmount, tvPeriodLabel, tvNoBudget;
     private TextView tvTotalEver, tvLastPeriod;
     private LinearLayout layoutRecentPurchases;

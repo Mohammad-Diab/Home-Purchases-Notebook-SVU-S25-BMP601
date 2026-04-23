@@ -27,26 +27,27 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
+                <!-- Arch container: clips the lower half of the full circle view -->
                 <FrameLayout
-                    android:layout_width="160dp"
-                    android:layout_height="160dp">
+                    android:layout_width="220dp"
+                    android:layout_height="130dp"
+                    android:clipChildren="true">
 
-                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                    <!-- Full circle view; only top 130dp is visible inside this container -->
+                    <com.example.homepurchases.views.ArcProgressView
                         android:id="@+id/progress_budget"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:indeterminate="false"
-                        android:max="100"
-                        android:progress="0"
-                        app:indicatorSize="136dp"
-                        app:trackThickness="12dp" />
+                        android:layout_width="220dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="top|center_horizontal" />
 
+                    <!-- Text anchored to the bottom of the container (at the arch opening) -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingBottom="6dp">
 
                         <TextView
                             android:id="@+id/tv_spent_amount"
