@@ -16,9 +16,8 @@ public class ArcProgressView extends View {
     private int   progress    = 0;
     private float strokeWidth = 0;
 
-    // Start at left (180°), sweep counter-clockwise (-180°) through the top to right.
     private static final float START_ANGLE   = 180f;
-    private static final float SWEEP_TOTAL   = -180f;
+    private static final float SWEEP_TOTAL   = 180f;
 
     public ArcProgressView(Context context) {
         super(context);
