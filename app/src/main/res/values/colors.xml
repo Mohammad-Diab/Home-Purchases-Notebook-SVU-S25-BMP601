@@ -26,4 +26,8 @@
     <color name="dark_surface">#1E1E1E</color>
     <color name="dark_text_primary">#EEEEEE</color>
     <color name="dark_text_secondary">#AAAAAA</color>
+
+    <!-- Error colors -->
+    <color name="error_light">#B00020</color>
+    <color name="error_dark">#CF6679</color>
 </resources>

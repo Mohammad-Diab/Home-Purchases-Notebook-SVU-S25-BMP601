@@ -8,6 +8,12 @@
         <item name="android:windowBackground">@color/light_background</item>
         <item name="android:textColorPrimary">@color/light_text_primary</item>
         <item name="android:textColorSecondary">@color/light_text_secondary</item>
+        <item name="colorSurface">@color/light_surface</item>
+        <item name="colorOnSurface">@color/light_text_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorError">@color/error_light</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.HomePurchases.Light.1" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -17,6 +23,12 @@
         <item name="android:windowBackground">@color/light_background</item>
         <item name="android:textColorPrimary">@color/light_text_primary</item>
         <item name="android:textColorSecondary">@color/light_text_secondary</item>
+        <item name="colorSurface">@color/light_surface</item>
+        <item name="colorOnSurface">@color/light_text_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorError">@color/error_light</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.HomePurchases.Light.2" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -26,6 +38,12 @@
         <item name="android:windowBackground">@color/light_background</item>
         <item name="android:textColorPrimary">@color/light_text_primary</item>
         <item name="android:textColorSecondary">@color/light_text_secondary</item>
+        <item name="colorSurface">@color/light_surface</item>
+        <item name="colorOnSurface">@color/light_text_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorError">@color/error_light</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.HomePurchases.Light.3" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -35,6 +53,12 @@
         <item name="android:windowBackground">@color/light_background</item>
         <item name="android:textColorPrimary">@color/light_text_primary</item>
         <item name="android:textColorSecondary">@color/light_text_secondary</item>
+        <item name="colorSurface">@color/light_surface</item>
+        <item name="colorOnSurface">@color/light_text_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorError">@color/error_light</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- ====== DARK MODE ====== -->
@@ -45,6 +69,12 @@
         <item name="android:windowBackground">@color/dark_background</item>
         <item name="android:textColorPrimary">@color/dark_text_primary</item>
         <item name="android:textColorSecondary">@color/dark_text_secondary</item>
+        <item name="colorSurface">@color/dark_surface</item>
+        <item name="colorOnSurface">@color/dark_text_primary</item>
+        <item name="colorOnPrimary">@color/dark_background</item>
+        <item name="colorError">@color/error_dark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.HomePurchases.Dark.1" parent="Theme.AppCompat">
@@ -54,6 +84,12 @@
         <item name="android:windowBackground">@color/dark_background</item>
         <item name="android:textColorPrimary">@color/dark_text_primary</item>
         <item name="android:textColorSecondary">@color/dark_text_secondary</item>
+        <item name="colorSurface">@color/dark_surface</item>
+        <item name="colorOnSurface">@color/dark_text_primary</item>
+        <item name="colorOnPrimary">@color/dark_background</item>
+        <item name="colorError">@color/error_dark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.HomePurchases.Dark.2" parent="Theme.AppCompat">
@@ -63,6 +99,12 @@
         <item name="android:windowBackground">@color/dark_background</item>
         <item name="android:textColorPrimary">@color/dark_text_primary</item>
         <item name="android:textColorSecondary">@color/dark_text_secondary</item>
+        <item name="colorSurface">@color/dark_surface</item>
+        <item name="colorOnSurface">@color/dark_text_primary</item>
+        <item name="colorOnPrimary">@color/dark_background</item>
+        <item name="colorError">@color/error_dark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.HomePurchases.Dark.3" parent="Theme.AppCompat">
@@ -72,6 +114,12 @@
         <item name="android:windowBackground">@color/dark_background</item>
         <item name="android:textColorPrimary">@color/dark_text_primary</item>
         <item name="android:textColorSecondary">@color/dark_text_secondary</item>
+        <item name="colorSurface">@color/dark_surface</item>
+        <item name="colorOnSurface">@color/dark_text_primary</item>
+        <item name="colorOnPrimary">@color/dark_background</item>
+        <item name="colorError">@color/error_dark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>
