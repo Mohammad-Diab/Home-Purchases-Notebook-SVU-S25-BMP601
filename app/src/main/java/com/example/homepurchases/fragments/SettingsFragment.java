@@ -28,7 +28,6 @@ import com.example.homepurchases.utils.SettingsManager;
 import com.example.homepurchases.utils.ThemeManager;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -111,13 +110,7 @@ public class SettingsFragment extends Fragment {
         updateSwatches(isDark, accent);
 
         // Budget amount
-        float budgetNewSP = SettingsManager.getBudgetAmount(requireContext());
-        if (budgetNewSP > 0) {
-            double display = CurrencyFormatter.toDisplayAmount(budgetNewSP, requireContext());
-            etBudgetAmount.setText(String.valueOf(display));
-            etBudgetAmount.setEnabled(false);
-            tvBudgetLocked.setVisibility(View.VISIBLE);
-        }
+        refreshBudgetField();
 
         // Period spinner
         List<String> periods = Arrays.asList(
@@ -179,9 +172,10 @@ public class SettingsFragment extends Fragment {
         if (period == 1) { // WEEKLY
             items = Arrays.asList(getResources().getStringArray(R.array.week_days));
         } else { // MONTHLY
-            NumberFormat nf = NumberFormat.getIntegerInstance(new Locale("ar"));
             items = new ArrayList<>();
-            for (int i = 1; i <= 31; i++) items.add(nf.format(i));
+            for (int i = 1; i <= 31; i++) {
+                items.add(CurrencyFormatter.toArabicDigits(String.valueOf(i)));
+            }
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -252,6 +246,7 @@ public class SettingsFragment extends Fragment {
                     ? SettingsManager.CURRENCY_NEW
                     : SettingsManager.CURRENCY_OLD;
             SettingsManager.saveCurrencyType(requireContext(), type);
+            refreshBudgetField();
         });
 
         // Manage categories
@@ -286,6 +281,18 @@ public class SettingsFragment extends Fragment {
                         })
                         .setNegativeButton(R.string.btn_cancel, null)
                         .show());
+    }
+
+    private void refreshBudgetField() {
+        float budgetNewSP = SettingsManager.getBudgetAmount(requireContext());
+        if (budgetNewSP > 0) {
+            etBudgetAmount.setText(CurrencyFormatter.formatAmount(budgetNewSP, requireContext()));
+            etBudgetAmount.setEnabled(false);
+            tvBudgetLocked.setVisibility(View.VISIBLE);
+        } else {
+            etBudgetAmount.setEnabled(true);
+            tvBudgetLocked.setVisibility(View.GONE);
+        }
     }
 
     private void saveBudgetAmount() {

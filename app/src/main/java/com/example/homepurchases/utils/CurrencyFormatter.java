@@ -42,7 +42,15 @@ public class CurrencyFormatter {
         return sb.toString();
     }
 
-    // Returns the raw display amount without label (for input fields)
+    // Formatted number without label — use for locked/read-only display fields
+    public static String formatAmount(double amountInNewSP, Context context) {
+        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("ar"));
+        nf.setMaximumFractionDigits(2);
+        nf.setMinimumFractionDigits(0);
+        return toArabicDigits(nf.format(toDisplayAmount(amountInNewSP, context)));
+    }
+
+    // Returns the raw display amount without label (for editable input fields)
     public static double toDisplayAmount(double amountInNewSP, Context context) {
         if (SettingsManager.getCurrencyType(context) == SettingsManager.CURRENCY_OLD) {
             return amountInNewSP * NEW_TO_OLD;
