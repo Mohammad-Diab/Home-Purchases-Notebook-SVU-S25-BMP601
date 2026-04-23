@@ -26,7 +26,20 @@ public class CurrencyFormatter {
         nf.setMaximumFractionDigits(2);
         nf.setMinimumFractionDigits(0);
 
-        return nf.format(displayAmount) + " " + label;
+        return toArabicDigits(nf.format(displayAmount)) + " " + label;
+    }
+
+    public static String toArabicDigits(String input) {
+        StringBuilder sb = new StringBuilder(input.length());
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (c >= '0' && c <= '9') {
+                sb.append((char) ('\u0660' + (c - '0')));
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
     // Returns the raw display amount without label (for input fields)

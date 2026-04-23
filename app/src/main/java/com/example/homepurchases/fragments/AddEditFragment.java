@@ -77,7 +77,7 @@ public class AddEditFragment extends Fragment {
                 : getString(R.string.edit_purchase));
 
         loadCategories();
-        tvSelectedDate.setText(dateFormat.format(new Date(selectedDateMillis)));
+        tvSelectedDate.setText(CurrencyFormatter.toArabicDigits(dateFormat.format(new Date(selectedDateMillis))));
         setupTotalWatcher();
 
         btnPickDate.setOnClickListener(v -> showDatePicker());
@@ -120,7 +120,7 @@ public class AddEditFragment extends Fragment {
         if (p.getNotes() != null) etNotes.setText(p.getNotes());
 
         selectedDateMillis = p.getDate();
-        tvSelectedDate.setText(dateFormat.format(new Date(selectedDateMillis)));
+        tvSelectedDate.setText(CurrencyFormatter.toArabicDigits(dateFormat.format(new Date(selectedDateMillis))));
 
         for (int i = 0; i < categories.size(); i++) {
             if (categories.get(i).getId() == p.getCategoryId()) {
@@ -159,7 +159,7 @@ public class AddEditFragment extends Fragment {
         new DatePickerDialog(requireContext(), (dp, year, month, day) -> {
             cal.set(year, month, day);
             selectedDateMillis = cal.getTimeInMillis();
-            tvSelectedDate.setText(dateFormat.format(new Date(selectedDateMillis)));
+            tvSelectedDate.setText(CurrencyFormatter.toArabicDigits(dateFormat.format(new Date(selectedDateMillis))));
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
                 cal.get(Calendar.DAY_OF_MONTH)).show();
     }

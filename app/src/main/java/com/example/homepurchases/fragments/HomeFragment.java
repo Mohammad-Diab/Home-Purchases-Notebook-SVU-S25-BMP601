@@ -177,7 +177,7 @@ public class HomeFragment extends Fragment {
 
             ((TextView) row.findViewById(R.id.tv_item_name)).setText(p.getItemName());
             ((TextView) row.findViewById(R.id.tv_date))
-                    .setText(dateFormat.format(new Date(p.getDate())));
+                    .setText(CurrencyFormatter.toArabicDigits(dateFormat.format(new Date(p.getDate()))));
             ((TextView) row.findViewById(R.id.tv_total_cost))
                     .setText(CurrencyFormatter.format(p.getTotalCost(), requireContext()));
 

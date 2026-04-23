@@ -72,7 +72,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
 
         holder.tvItemName.setText(purchase.getItemName());
         holder.tvTotalCost.setText(CurrencyFormatter.format(purchase.getTotalCost(), context));
-        holder.tvDate.setText(dateFormat.format(new Date(purchase.getDate())));
+        holder.tvDate.setText(CurrencyFormatter.toArabicDigits(dateFormat.format(new Date(purchase.getDate()))));
 
         if (category != null) {
             holder.tvCategoryName.setText(category.getName());
