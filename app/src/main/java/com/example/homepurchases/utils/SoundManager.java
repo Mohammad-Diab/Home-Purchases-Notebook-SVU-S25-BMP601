@@ -4,8 +4,7 @@ import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 
-// TODO: add sound files to res/raw/ (sound_fab.wav, sound_save.wav, sound_click.wav)
-//       then uncomment R import and the three soundPool.load() lines below
+import com.example.homepurchases.R;
 
 public class SoundManager {
 
@@ -30,10 +29,9 @@ public class SoundManager {
             if (status == 0) loaded = true;
         });
 
-        // TODO: uncomment when sound files are added to res/raw/
-        // soundFab   = soundPool.load(context, R.raw.sound_fab,   1);
-        // soundSave  = soundPool.load(context, R.raw.sound_save,  1);
-        // soundClick = soundPool.load(context, R.raw.sound_click, 1);
+        soundFab   = soundPool.load(context, R.raw.sound_fab,   1);
+        soundSave  = soundPool.load(context, R.raw.sound_save,  1);
+        soundClick = soundPool.load(context, R.raw.sound_click, 1);
     }
 
     public void playFab() {
