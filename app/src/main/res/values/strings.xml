@@ -71,6 +71,7 @@
     <!-- Settings fragment -->
     <string name="settings_title">الإعدادات</string>
     <string name="settings_theme_section">المظهر</string>
+    <string name="settings_display_mode">وضع العرض</string>
     <string name="settings_mode_light">الوضع الفاتح</string>
     <string name="settings_mode_dark">الوضع الداكن</string>
     <string name="settings_accent_color">لون التمييز</string>

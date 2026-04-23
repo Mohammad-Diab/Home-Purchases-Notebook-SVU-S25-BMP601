@@ -98,8 +98,15 @@ public class HomeFragment extends Fragment {
 
     private void loadBudgetSection() {
         if (!BudgetManager.isBudgetSet(requireContext())) {
-            progressBudget.setProgress(0);
-            tvSpentAmount.setText(CurrencyFormatter.format(0, requireContext()));
+            double totalSpent = purchaseDAO.getTotalExpenses();
+            boolean isDarkNB = SettingsManager.getThemeMode(requireContext()) == SettingsManager.MODE_DARK;
+            int accentNB = SettingsManager.getThemeAccent(requireContext());
+            int[] accentColorsNB = isDarkNB
+                    ? new int[]{R.color.accent_dark_0, R.color.accent_dark_1, R.color.accent_dark_2, R.color.accent_dark_3}
+                    : new int[]{R.color.accent_light_0, R.color.accent_light_1, R.color.accent_light_2, R.color.accent_light_3};
+            progressBudget.setIndicatorColor(ContextCompat.getColor(requireContext(), accentColorsNB[accentNB]));
+            progressBudget.setProgress(100);
+            tvSpentAmount.setText(CurrencyFormatter.format(totalSpent, requireContext()));
             tvPeriodLabel.setVisibility(View.GONE);
             tvNoBudget.setVisibility(View.VISIBLE);
             return;

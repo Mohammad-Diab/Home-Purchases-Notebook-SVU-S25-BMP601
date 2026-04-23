@@ -3,8 +3,6 @@ package com.example.homepurchases.fragments;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -39,8 +36,8 @@ import java.util.Locale;
 
 public class SettingsFragment extends Fragment {
 
-    private SwitchCompat switchDarkMode;
-    private TextView tvModeLabel, tvAccentName, tvBudgetLocked;
+    private Spinner spinnerDarkMode;
+    private TextView tvAccentName, tvBudgetLocked;
     private AppCompatImageView[] accentSwatches;
     private TextInputEditText etBudgetAmount;
     private Spinner spinnerPeriod, spinnerResetDay;
@@ -78,8 +75,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void bindViews(View view) {
-        switchDarkMode  = view.findViewById(R.id.switch_dark_mode);
-        tvModeLabel     = view.findViewById(R.id.tv_mode_label);
+        spinnerDarkMode = view.findViewById(R.id.spinner_dark_mode);
         tvAccentName    = view.findViewById(R.id.tv_accent_name);
         etBudgetAmount  = view.findViewById(R.id.et_budget_amount);
         tvBudgetLocked  = view.findViewById(R.id.tv_budget_locked);
@@ -101,9 +97,15 @@ public class SettingsFragment extends Fragment {
         int accent = SettingsManager.getThemeAccent(requireContext());
         boolean isDark = mode == SettingsManager.MODE_DARK;
 
-        // Mode switch
-        switchDarkMode.setChecked(isDark);
-        tvModeLabel.setText(isDark ? R.string.settings_mode_dark : R.string.settings_mode_light);
+        // Mode spinner
+        List<String> modeItems = Arrays.asList(
+                getString(R.string.settings_mode_light),
+                getString(R.string.settings_mode_dark));
+        ArrayAdapter<String> modeAdapter = new ArrayAdapter<>(
+                requireContext(), android.R.layout.simple_spinner_item, modeItems);
+        modeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDarkMode.setAdapter(modeAdapter);
+        spinnerDarkMode.setSelection(mode);
 
         // Accent swatches
         updateSwatches(isDark, accent);
@@ -148,9 +150,20 @@ public class SettingsFragment extends Fragment {
         for (int i = 0; i < 4; i++) {
             int color = ContextCompat.getColor(requireContext(), colorRes[i]);
             accentSwatches[i].setBackgroundTintList(ColorStateList.valueOf(color));
-            float scale = (i == selectedAccent) ? 1.25f : 1.0f;
-            accentSwatches[i].setScaleX(scale);
-            accentSwatches[i].setScaleY(scale);
+            accentSwatches[i].setScaleX(1.0f);
+            accentSwatches[i].setScaleY(1.0f);
+            if (i == selectedAccent) {
+                accentSwatches[i].setForeground(
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_accent_swatch_selected));
+                accentSwatches[i].setImageResource(R.drawable.ic_done);
+                accentSwatches[i].setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(requireContext(), android.R.color.white)));
+                accentSwatches[i].setPadding(8, 8, 8, 8);
+            } else {
+                accentSwatches[i].setForeground(null);
+                accentSwatches[i].setImageDrawable(null);
+                accentSwatches[i].setPadding(0, 0, 0, 0);
+            }
         }
         tvAccentName.setText(names[selectedAccent]);
     }
@@ -183,12 +196,15 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setupListeners(View view) {
-        // Dark mode switch
-        switchDarkMode.setOnCheckedChangeListener((btn, checked) -> {
-            if (isInitializing) return;
-            SettingsManager.saveThemeMode(requireContext(),
-                    checked ? SettingsManager.MODE_DARK : SettingsManager.MODE_LIGHT);
-            ThemeManager.restartApp(requireActivity());
+        // Display mode spinner
+        spinnerDarkMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
+                if (isInitializing) return;
+                SettingsManager.saveThemeMode(requireContext(), pos);
+                ThemeManager.restartApp(requireActivity());
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         // Accent swatches
