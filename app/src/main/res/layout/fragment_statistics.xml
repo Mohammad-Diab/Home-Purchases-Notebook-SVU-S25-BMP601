@@ -48,17 +48,22 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Category Breakdown Header -->
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- View switcher: by category / by date -->
+        <Spinner
+            android:id="@+id/spinner_stats_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Period selector: يوم / أسبوع / شهر / سنة (visible only for date view) -->
+        <Spinner
+            android:id="@+id/spinner_stats_period"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="@string/stats_by_category"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:visibility="gone" />
 
-        <!-- Category rows (filled programmatically) -->
+        <!-- Breakdown rows (filled programmatically) -->
         <LinearLayout
             android:id="@+id/layout_category_breakdown"
             android:layout_width="match_parent"

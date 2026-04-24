@@ -229,6 +229,36 @@ public class PurchaseDAO {
         }
     }
 
+    public Map<String, Double> getExpensesByPeriod(int periodType) {
+        try {
+            String fmt;
+            switch (periodType) {
+                case 0:  fmt = "%Y-%m-%d"; break;
+                case 1:  fmt = "%Y-%W";    break;
+                case 2:  fmt = "%Y-%m";    break;
+                case 3:  fmt = "%Y";       break;
+                default: fmt = "%Y-%m-%d"; break;
+            }
+            Map<String, Double> map = new LinkedHashMap<>();
+            Cursor cursor = db.rawQuery(
+                    "SELECT strftime('" + fmt + "', " +
+                    DatabaseHelper.COL_P_DATE + "/1000, 'unixepoch') AS period" +
+                    ", SUM(" + DatabaseHelper.COL_P_TOTAL_COST + ") AS total" +
+                    " FROM " + DatabaseHelper.TABLE_PURCHASES +
+                    " GROUP BY period" +
+                    " ORDER BY period DESC",
+                    null);
+            while (cursor.moveToNext()) {
+                map.put(cursor.getString(0), cursor.getDouble(1));
+            }
+            cursor.close();
+            return map;
+        } catch (Exception e) {
+            Log.e(TAG, "getExpensesByPeriod failed: " + e.getMessage());
+            return new LinkedHashMap<>();
+        }
+    }
+
     public Map<Integer, Double> getExpensesByCategory() {
         try {
             Map<Integer, Double> map = new LinkedHashMap<>();

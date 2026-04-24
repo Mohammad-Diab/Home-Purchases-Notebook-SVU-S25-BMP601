@@ -57,7 +57,19 @@
     <string name="statistics_title">الإحصائيات</string>
     <string name="stats_total_expenses">إجمالي الإنفاق</string>
     <string name="stats_by_category">الإنفاق حسب الفئة</string>
+    <string name="stats_by_date">الإنفاق حسب التاريخ</string>
     <string name="stats_no_data">لا توجد بيانات كافية</string>
+    <string name="stats_week_label">أسبوع %1$s / %2$s</string>
+    <string-array name="stats_view_options">
+        <item>الإنفاق حسب الفئة</item>
+        <item>الإنفاق حسب التاريخ</item>
+    </string-array>
+    <string-array name="stats_period_options">
+        <item>يوم</item>
+        <item>أسبوع</item>
+        <item>شهر</item>
+        <item>سنة</item>
+    </string-array>
 
     <!-- Filters -->
     <string name="filter_by_category">تصفية حسب الفئة</string>

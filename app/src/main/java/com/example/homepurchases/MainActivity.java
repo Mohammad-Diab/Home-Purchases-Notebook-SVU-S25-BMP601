@@ -100,7 +100,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         int currentId = navController.getCurrentDestination() != null
                 ? navController.getCurrentDestination().getId() : -1;
-        if (currentId == R.id.addEditFragment || currentId == R.id.categoryManagementFragment) {
+        if (currentId == R.id.addEditFragment
+                || currentId == R.id.categoryManagementFragment
+                || currentId == R.id.statisticsFragment) {
             soundManager.playCancel();
         }
         return navController.navigateUp() || super.onSupportNavigateUp();
