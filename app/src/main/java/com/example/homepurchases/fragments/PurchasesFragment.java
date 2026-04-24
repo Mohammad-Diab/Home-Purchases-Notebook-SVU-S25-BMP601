@@ -129,13 +129,9 @@ public class PurchasesFragment extends Fragment
         btnFilter.setOnClickListener(v -> showFilterMenu());
 
         FloatingActionButton fab = view.findViewById(R.id.fab_add);
-        fab.setOnClickListener(v -> {
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).getSoundManager().playFab();
-            }
-            Navigation.findNavController(requireView())
-                    .navigate(R.id.action_purchases_to_addEdit);
-        });
+        fab.setOnClickListener(v ->
+                Navigation.findNavController(requireView())
+                        .navigate(R.id.action_purchases_to_addEdit));
 
         updatePills();
         loadPurchases();
@@ -261,6 +257,9 @@ public class PurchasesFragment extends Fragment
     }
 
     private void showFilterMenu() {
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).getSoundManager().playOpen();
+        }
         String[] options = {
                 getString(R.string.filter_by_category),
                 getString(R.string.filter_by_date),
@@ -352,9 +351,6 @@ public class PurchasesFragment extends Fragment
 
     @Override
     public void onItemClick(Purchase purchase) {
-        if (getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).getSoundManager().playClick();
-        }
         Bundle args = new Bundle();
         args.putInt("purchaseId", purchase.getId());
         Navigation.findNavController(requireView())
@@ -363,16 +359,26 @@ public class PurchasesFragment extends Fragment
 
     @Override
     public void onDeleteClick(Purchase purchase) {
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).getSoundManager().playConfirm();
+        }
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.dialog_delete_title)
                 .setMessage(R.string.dialog_delete_message)
                 .setPositiveButton(R.string.btn_confirm, (d, w) -> {
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).getSoundManager().playDelete();
+                    }
                     purchaseDAO.deletePurchase(purchase.getId());
                     Toast.makeText(requireContext(),
                             R.string.purchase_deleted, Toast.LENGTH_SHORT).show();
                     loadPurchases();
                 })
-                .setNegativeButton(R.string.btn_cancel, null)
+                .setNegativeButton(R.string.btn_cancel, (d, w) -> {
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).getSoundManager().playCancel();
+                    }
+                })
                 .show();
     }
 

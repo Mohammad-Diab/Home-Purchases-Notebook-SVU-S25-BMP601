@@ -77,13 +77,9 @@ public class HomeFragment extends Fragment {
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_home_to_statistics));
 
-        view.findViewById(R.id.fab_add).setOnClickListener(v -> {
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).getSoundManager().playFab();
-            }
-            Navigation.findNavController(requireView())
-                    .navigate(R.id.action_home_to_addEdit);
-        });
+        view.findViewById(R.id.fab_add).setOnClickListener(v ->
+                Navigation.findNavController(requireView())
+                        .navigate(R.id.action_home_to_addEdit));
 
         loadData();
     }

@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -78,6 +79,18 @@ public class AddEditFragment extends Fragment {
 
         btnPickDate.setOnClickListener(v -> showDatePicker());
         btnSave.setOnClickListener(v -> savePurchase());
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(
+                getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        if (getActivity() instanceof MainActivity) {
+                            ((MainActivity) getActivity()).getSoundManager().playCancel();
+                        }
+                        setEnabled(false);
+                        requireActivity().getOnBackPressedDispatcher().onBackPressed();
+                    }
+                });
 
         if (purchaseId != -1) populateForEdit();
     }

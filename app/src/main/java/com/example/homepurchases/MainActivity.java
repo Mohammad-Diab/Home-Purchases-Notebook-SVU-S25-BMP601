@@ -60,17 +60,36 @@ public class MainActivity extends AppCompatActivity {
             bottomNav.setVisibility(isTopLevel ? View.VISIBLE : View.GONE);
         });
 
-        // Runs after NavigationUI's listener — corrects AddEditFragment title based on purchaseId arg
+        soundManager = new SoundManager(this);
+
+        // Tab switch sound — fires only when moving between distinct top-level tabs
+        final int[] prevTopLevelId = {R.id.homeFragment};
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.addEditFragment) {
+            int id = destination.getId();
+            boolean isTopLevel = id == R.id.homeFragment
+                    || id == R.id.purchasesFragment
+                    || id == R.id.settingsFragment;
+            if (isTopLevel && id != prevTopLevelId[0]) {
+                soundManager.playTab();
+            }
+            if (isTopLevel) prevTopLevelId[0] = id;
+        });
+
+        // Sub-screen open sound + AddEditFragment title correction (runs after NavigationUI's listener)
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            int id = destination.getId();
+            if (id == R.id.addEditFragment
+                    || id == R.id.statisticsFragment
+                    || id == R.id.categoryManagementFragment) {
+                soundManager.playOpen();
+            }
+            if (id == R.id.addEditFragment) {
                 int purchaseId = arguments != null ? arguments.getInt("purchaseId", -1) : -1;
                 getSupportActionBar().setTitle(purchaseId == -1
                         ? getString(R.string.add_purchase)
                         : getString(R.string.edit_purchase));
             }
         });
-
-        soundManager = new SoundManager(this);
     }
 
     public SoundManager getSoundManager() {
@@ -79,6 +98,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        int currentId = navController.getCurrentDestination() != null
+                ? navController.getCurrentDestination().getId() : -1;
+        if (currentId == R.id.addEditFragment || currentId == R.id.categoryManagementFragment) {
+            soundManager.playCancel();
+        }
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
 

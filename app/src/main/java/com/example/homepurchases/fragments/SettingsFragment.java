@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.homepurchases.MainActivity;
 import com.example.homepurchases.R;
 import com.example.homepurchases.utils.CurrencyFormatter;
 import com.example.homepurchases.utils.SeedDataManager;
@@ -254,32 +255,51 @@ public class SettingsFragment extends Fragment {
                         .navigate(R.id.action_settings_to_categories));
 
         // Seed test data
-        view.findViewById(R.id.btn_seed_test_data).setOnClickListener(v ->
-                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.seed_confirm_title)
-                        .setMessage(R.string.seed_confirm_message)
-                        .setPositiveButton(R.string.btn_confirm, (d, w) -> {
-                            boolean seeded = SeedDataManager.seedTestData(requireContext());
-                            Toast.makeText(requireContext(),
-                                    seeded ? R.string.seed_success : R.string.seed_data_exists,
-                                    Toast.LENGTH_SHORT).show();
-                        })
-                        .setNegativeButton(R.string.btn_cancel, null)
-                        .show());
+        view.findViewById(R.id.btn_seed_test_data).setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).getSoundManager().playConfirm();
+            }
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.seed_confirm_title)
+                    .setMessage(R.string.seed_confirm_message)
+                    .setPositiveButton(R.string.btn_confirm, (d, w) -> {
+                        boolean seeded = SeedDataManager.seedTestData(requireContext());
+                        Toast.makeText(requireContext(),
+                                seeded ? R.string.seed_success : R.string.seed_data_exists,
+                                Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton(R.string.btn_cancel, (d, w) -> {
+                        if (getActivity() instanceof MainActivity) {
+                            ((MainActivity) getActivity()).getSoundManager().playCancel();
+                        }
+                    })
+                    .show();
+        });
 
         // Reset all data
-        view.findViewById(R.id.btn_reset_data).setOnClickListener(v ->
-                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.reset_confirm_title)
-                        .setMessage(R.string.reset_confirm_message)
-                        .setPositiveButton(R.string.btn_confirm, (d, w) -> {
-                            new com.example.homepurchases.database.PurchaseDAO(requireContext())
-                                    .deleteAllPurchases();
-                            Toast.makeText(requireContext(),
-                                    R.string.reset_success, Toast.LENGTH_SHORT).show();
-                        })
-                        .setNegativeButton(R.string.btn_cancel, null)
-                        .show());
+        view.findViewById(R.id.btn_reset_data).setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).getSoundManager().playConfirm();
+            }
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.reset_confirm_title)
+                    .setMessage(R.string.reset_confirm_message)
+                    .setPositiveButton(R.string.btn_confirm, (d, w) -> {
+                        if (getActivity() instanceof MainActivity) {
+                            ((MainActivity) getActivity()).getSoundManager().playDelete();
+                        }
+                        new com.example.homepurchases.database.PurchaseDAO(requireContext())
+                                .deleteAllPurchases();
+                        Toast.makeText(requireContext(),
+                                R.string.reset_success, Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton(R.string.btn_cancel, (d, w) -> {
+                        if (getActivity() instanceof MainActivity) {
+                            ((MainActivity) getActivity()).getSoundManager().playCancel();
+                        }
+                    })
+                    .show();
+        });
     }
 
     private void refreshBudgetField() {

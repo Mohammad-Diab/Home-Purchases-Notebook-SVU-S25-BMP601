@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.homepurchases.MainActivity;
 import com.example.homepurchases.R;
 import com.example.homepurchases.adapters.CategoryManagementAdapter;
 import com.example.homepurchases.adapters.IconPickerAdapter;
@@ -59,6 +61,19 @@ public class CategoryManagementFragment extends Fragment
         rvCategories.setAdapter(adapter);
 
         fabAdd.setOnClickListener(v -> showCategoryDialog(null));
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(
+                getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        if (getActivity() instanceof MainActivity) {
+                            ((MainActivity) getActivity()).getSoundManager().playCancel();
+                        }
+                        setEnabled(false);
+                        requireActivity().getOnBackPressedDispatcher().onBackPressed();
+                    }
+                });
+
         loadCategories();
     }
 
@@ -91,20 +106,33 @@ public class CategoryManagementFragment extends Fragment
                     R.string.category_has_purchases, Toast.LENGTH_SHORT).show();
             return;
         }
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).getSoundManager().playConfirm();
+        }
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.dialog_delete_title)
                 .setMessage(R.string.dialog_delete_message)
                 .setPositiveButton(R.string.btn_confirm, (d, w) -> {
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).getSoundManager().playDelete();
+                    }
                     categoryDAO.deleteCategory(category.getId());
                     Toast.makeText(requireContext(),
                             R.string.category_deleted, Toast.LENGTH_SHORT).show();
                     loadCategories();
                 })
-                .setNegativeButton(R.string.btn_cancel, null)
+                .setNegativeButton(R.string.btn_cancel, (d, w) -> {
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).getSoundManager().playCancel();
+                    }
+                })
                 .show();
     }
 
     private void showCategoryDialog(@Nullable Category existing) {
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).getSoundManager().playOpen();
+        }
         View dialogView = LayoutInflater.from(requireContext())
                 .inflate(R.layout.dialog_category, null);
 
