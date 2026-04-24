@@ -9,9 +9,11 @@ import android.util.Log;
 import com.example.homepurchases.models.Purchase;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class PurchaseDAO {
 
@@ -103,6 +105,81 @@ public class PurchaseDAO {
             Log.e(TAG, "getPurchasesByDateRange failed: " + e.getMessage());
             return new ArrayList<>();
         }
+    }
+
+    public List<Purchase> getFilteredPurchases(
+            Integer categoryId, Long startDate, Long endDate, String query) {
+        try {
+            StringBuilder where = new StringBuilder();
+            List<String> args = new ArrayList<>();
+
+            if (categoryId != null) {
+                where.append(DatabaseHelper.COL_P_CATEGORY_ID).append("=?");
+                args.add(String.valueOf(categoryId));
+            }
+            if (startDate != null) {
+                if (where.length() > 0) where.append(" AND ");
+                where.append(DatabaseHelper.COL_P_DATE).append(" BETWEEN ? AND ?");
+                args.add(String.valueOf(startDate));
+                args.add(String.valueOf(endDate));
+            }
+            if (query != null && !query.isEmpty()) {
+                if (where.length() > 0) where.append(" AND ");
+                where.append(DatabaseHelper.COL_P_ITEM_NAME).append(" LIKE ?");
+                args.add("%" + query + "%");
+            }
+
+            String selection = where.length() > 0 ? where.toString() : null;
+            String[] selectionArgs = args.isEmpty() ? null : args.toArray(new String[0]);
+            return queryPurchases(selection, selectionArgs);
+        } catch (Exception e) {
+            Log.e(TAG, "getFilteredPurchases failed: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public long getEarliestPurchaseDate() {
+        try {
+            Cursor cursor = db.rawQuery(
+                    "SELECT MIN(" + DatabaseHelper.COL_P_DATE + ") FROM " +
+                    DatabaseHelper.TABLE_PURCHASES, null);
+            long result = -1;
+            if (cursor.moveToFirst() && !cursor.isNull(0)) result = cursor.getLong(0);
+            cursor.close();
+            return result;
+        } catch (Exception e) {
+            Log.e(TAG, "getEarliestPurchaseDate failed: " + e.getMessage());
+            return -1;
+        }
+    }
+
+    public long getLatestPurchaseDate() {
+        try {
+            Cursor cursor = db.rawQuery(
+                    "SELECT MAX(" + DatabaseHelper.COL_P_DATE + ") FROM " +
+                    DatabaseHelper.TABLE_PURCHASES, null);
+            long result = -1;
+            if (cursor.moveToFirst() && !cursor.isNull(0)) result = cursor.getLong(0);
+            cursor.close();
+            return result;
+        } catch (Exception e) {
+            Log.e(TAG, "getLatestPurchaseDate failed: " + e.getMessage());
+            return -1;
+        }
+    }
+
+    public Set<Integer> getCategoryIdsWithPurchases() {
+        Set<Integer> ids = new HashSet<>();
+        try {
+            Cursor cursor = db.rawQuery(
+                    "SELECT DISTINCT " + DatabaseHelper.COL_P_CATEGORY_ID +
+                    " FROM " + DatabaseHelper.TABLE_PURCHASES, null);
+            while (cursor.moveToNext()) ids.add(cursor.getInt(0));
+            cursor.close();
+        } catch (Exception e) {
+            Log.e(TAG, "getCategoryIdsWithPurchases failed: " + e.getMessage());
+        }
+        return ids;
     }
 
     public List<Purchase> searchPurchases(String query) {

@@ -67,6 +67,9 @@
     <string name="filter_apply">تطبيق</string>
     <string name="filter_clear">مسح التصفية</string>
     <string name="filter_all">عرض الكل</string>
+    <string name="filter_clear_all">مسح جميع التصفيات</string>
+    <string name="filter_pill_category">الفئة: %s</string>
+    <string name="filter_pill_date">%s – %s</string>
 
     <!-- Settings fragment -->
     <string name="settings_title">الإعدادات</string>

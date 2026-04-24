@@ -1,17 +1,26 @@
 package com.example.homepurchases.fragments;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.HorizontalScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.example.homepurchases.views.BackspaceEditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.SearchView;
+import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,27 +35,42 @@ import com.example.homepurchases.dialogs.FilterCategoryDialog;
 import com.example.homepurchases.dialogs.FilterDateDialog;
 import com.example.homepurchases.models.Category;
 import com.example.homepurchases.models.Purchase;
+import com.example.homepurchases.utils.CurrencyFormatter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public class PurchasesFragment extends Fragment
         implements PurchaseAdapter.OnPurchaseActionListener {
 
     private RecyclerView rvPurchases;
     private TextView tvEmptyPurchases, tvEmptyFiltered;
+    private LinearLayout pillsContainer;
+    private BackspaceEditText etSearch;
+    private ImageButton btnFilter;
+    private ImageButton btnClearSearch;
     private PurchaseAdapter adapter;
     private PurchaseDAO purchaseDAO;
     private CategoryDAO categoryDAO;
 
-    private enum FilterMode { NONE, CATEGORY, DATE }
-    private FilterMode filterMode = FilterMode.NONE;
+    // Filter state — all three stack independently
     private int filteredCategoryId = -1;
-    private long filterStart, filterEnd;
+    private String filteredCategoryName = null;
+    private long filterStart = -1, filterEnd = -1;
+    private String filterDateLabel = null;
     private String searchQuery = "";
+
+    private boolean isClearing = false;
+
+    private final SimpleDateFormat pillDateFmt =
+            new SimpleDateFormat("yyyy/MM/dd", new Locale("ar"));
 
     @Nullable
     @Override
@@ -59,30 +83,50 @@ public class PurchasesFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        isClearing = true; // block TextWatcher until onViewStateRestored
 
         purchaseDAO      = new PurchaseDAO(requireContext());
         categoryDAO      = new CategoryDAO(requireContext());
         rvPurchases      = view.findViewById(R.id.rv_purchases);
         tvEmptyPurchases = view.findViewById(R.id.tv_empty_purchases);
         tvEmptyFiltered  = view.findViewById(R.id.tv_empty_filtered);
+        pillsContainer   = view.findViewById(R.id.pills_container);
+        etSearch         = view.findViewById(R.id.et_search);
+        btnFilter        = view.findViewById(R.id.btn_filter);
+        btnClearSearch   = view.findViewById(R.id.btn_clear_search);
+
+        btnClearSearch.setOnClickListener(v -> clearAllFilters());
+        etSearch.setOnBackspaceEmptyListener(this::removeLastFilter);
 
         requireActivity().setTitle(R.string.tab_purchases);
+
+        // Outlined rounded background on the container that holds scroll + clear button
+        View searchContainer = view.findViewById(R.id.search_input_container);
+        int borderColor = obtainAttrColor(android.R.attr.textColorSecondary);
+        GradientDrawable searchBg = new GradientDrawable();
+        searchBg.setShape(GradientDrawable.RECTANGLE);
+        searchBg.setCornerRadius(dpToPx(24));
+        searchBg.setStroke(dpToPx(1), borderColor);
+        searchBg.setColor(Color.TRANSPARENT);
+        searchContainer.setBackground(searchBg);
+        searchContainer.setClipToOutline(true);
 
         adapter = new PurchaseAdapter(requireContext(), buildCategoryMap(), this);
         rvPurchases.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvPurchases.setAdapter(adapter);
 
-        SearchView searchView = view.findViewById(R.id.search_purchases);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override public boolean onQueryTextSubmit(String query) { return false; }
-            @Override public boolean onQueryTextChange(String newText) {
-                searchQuery = newText.trim();
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override public void afterTextChanged(Editable s) {
+                if (isClearing) return;
+                searchQuery = s.toString().trim();
+                updatePills();
                 loadPurchases();
-                return true;
             }
         });
 
-        view.findViewById(R.id.btn_filter).setOnClickListener(v -> showFilterMenu());
+        btnFilter.setOnClickListener(v -> showFilterMenu());
 
         FloatingActionButton fab = view.findViewById(R.id.fab_add);
         fab.setOnClickListener(v -> {
@@ -93,7 +137,14 @@ public class PurchasesFragment extends Fragment
                     .navigate(R.id.action_purchases_to_addEdit);
         });
 
+        updatePills();
         loadPurchases();
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        isClearing = false; // view state fully restored — TextWatcher can respond to real input now
     }
 
     @Override
@@ -113,46 +164,127 @@ public class PurchasesFragment extends Fragment
 
     private void loadPurchases() {
         try {
-            List<Purchase> list;
-            if (!searchQuery.isEmpty()) {
-                list = purchaseDAO.searchPurchases(searchQuery);
-            } else if (filterMode == FilterMode.CATEGORY) {
-                list = purchaseDAO.getPurchasesByCategory(filteredCategoryId);
-            } else if (filterMode == FilterMode.DATE) {
-                list = purchaseDAO.getPurchasesByDateRange(filterStart, filterEnd);
-            } else {
-                list = purchaseDAO.getAllPurchases();
-            }
+            Integer catId = filteredCategoryId != -1 ? filteredCategoryId : null;
+            Long    start = filterStart != -1 ? filterStart : null;
+            Long    end   = filterEnd   != -1 ? filterEnd   : null;
+            String  query = !searchQuery.isEmpty() ? searchQuery : null;
 
+            List<Purchase> list = purchaseDAO.getFilteredPurchases(catId, start, end, query);
             adapter.updateList(list);
 
-            boolean isFiltered = !searchQuery.isEmpty() || filterMode != FilterMode.NONE;
-            tvEmptyPurchases.setVisibility((!isFiltered && list.isEmpty()) ? View.VISIBLE : View.GONE);
-            tvEmptyFiltered.setVisibility((isFiltered && list.isEmpty()) ? View.VISIBLE : View.GONE);
+            boolean hasFilter = catId != null || start != null || query != null;
+            tvEmptyPurchases.setVisibility(!hasFilter && list.isEmpty() ? View.VISIBLE : View.GONE);
+            tvEmptyFiltered.setVisibility(hasFilter && list.isEmpty() ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             Log.e("PurchasesFragment", "loadPurchases failed: " + e.getMessage());
             Toast.makeText(requireContext(), R.string.error_generic, Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void updatePills() {
+        pillsContainer.removeAllViews();
+
+        if (filteredCategoryId != -1 && filteredCategoryName != null) {
+            addPill(getString(R.string.filter_pill_category, filteredCategoryName), () -> {
+                filteredCategoryId = -1;
+                filteredCategoryName = null;
+                updatePills();
+                loadPurchases();
+            });
+        }
+
+        if (filterStart != -1 && filterDateLabel != null) {
+            addPill(filterDateLabel, () -> {
+                filterStart = -1;
+                filterEnd = -1;
+                filterDateLabel = null;
+                updatePills();
+                loadPurchases();
+            });
+        }
+
+        boolean anyActive = filteredCategoryId != -1 || filterStart != -1 || !searchQuery.isEmpty();
+
+        // Filter button tint: colorPrimary when any filter active
+        int tintColor = anyActive
+                ? obtainAttrColor(com.google.android.material.R.attr.colorPrimary)
+                : obtainAttrColor(android.R.attr.textColorSecondary);
+        ImageViewCompat.setImageTintList(btnFilter, ColorStateList.valueOf(tintColor));
+
+        // Clear button visibility
+        if (btnClearSearch != null) {
+            btnClearSearch.setVisibility(anyActive ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void removeLastFilter() {
+        // Pop filters in reverse display order: date → category
+        if (filterStart != -1) {
+            filterStart = -1;
+            filterEnd = -1;
+            filterDateLabel = null;
+        } else if (filteredCategoryId != -1) {
+            filteredCategoryId = -1;
+            filteredCategoryName = null;
+        }
+        updatePills();
+        loadPurchases();
+    }
+
+    private void addPill(String label, Runnable onClose) {
+        View pill = LayoutInflater.from(requireContext())
+                .inflate(R.layout.item_filter_pill, pillsContainer, false);
+        ((TextView) pill.findViewById(R.id.tv_pill_label)).setText(label);
+
+        ImageButton closeBtn = pill.findViewById(R.id.btn_pill_close);
+        int secondaryColor = obtainAttrColor(android.R.attr.textColorSecondary);
+        GradientDrawable circle = new GradientDrawable();
+        circle.setShape(GradientDrawable.OVAL);
+        int r = Color.red(secondaryColor);
+        int g = Color.green(secondaryColor);
+        int b = Color.blue(secondaryColor);
+        circle.setColor(Color.argb(160, r, g, b));
+
+        GradientDrawable mask = new GradientDrawable();
+        mask.setShape(GradientDrawable.OVAL);
+        mask.setColor(Color.WHITE);
+
+        int rippleColor = obtainAttrColor(android.R.attr.colorControlHighlight);
+        android.graphics.drawable.RippleDrawable ripple =
+                new android.graphics.drawable.RippleDrawable(
+                        ColorStateList.valueOf(rippleColor), circle, mask);
+        closeBtn.setBackground(ripple);
+        ImageViewCompat.setImageTintList(closeBtn, ColorStateList.valueOf(Color.WHITE));
+
+        closeBtn.setOnClickListener(v -> onClose.run());
+        pillsContainer.addView(pill);
+    }
+
     private void showFilterMenu() {
         String[] options = {
                 getString(R.string.filter_by_category),
                 getString(R.string.filter_by_date),
-                getString(R.string.filter_clear)
+                getString(R.string.filter_clear_all)
         };
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.filter)
                 .setItems(options, (dialog, which) -> {
                     if (which == 0) showCategoryFilter();
                     else if (which == 1) showDateFilter();
-                    else clearFilter();
+                    else clearAllFilters();
                 })
                 .show();
     }
 
     private void showCategoryFilter() {
-        List<Category> categories = categoryDAO.getAllCategories();
+        Set<Integer> usedIds = purchaseDAO.getCategoryIdsWithPurchases();
+        List<Category> allCategories = categoryDAO.getAllCategories();
+
+        List<Category> categories = new ArrayList<>();
+        for (Category c : allCategories) {
+            if (usedIds.contains(c.getId())) categories.add(c);
+        }
+
         ArrayList<String> names = new ArrayList<>();
         for (Category c : categories) names.add(c.getName());
 
@@ -163,37 +295,58 @@ public class PurchasesFragment extends Fragment
                 for (Category c : categories) {
                     if (c.getName().equals(categoryName)) {
                         filteredCategoryId = c.getId();
+                        filteredCategoryName = c.getName();
                         break;
                     }
                 }
-                filterMode = FilterMode.CATEGORY;
+                updatePills();
                 loadPurchases();
             }
             @Override
-            public void onFilterCleared() { clearFilter(); }
+            public void onFilterCleared() { clearAllFilters(); }
         });
         dialog.show(getChildFragmentManager(), "filter_category");
     }
 
     private void showDateFilter() {
-        FilterDateDialog dialog = new FilterDateDialog();
+        long earliest = purchaseDAO.getEarliestPurchaseDate();
+        long latest   = purchaseDAO.getLatestPurchaseDate();
+        long today    = System.currentTimeMillis();
+        long maxDate  = Math.max(today, latest != -1 ? latest : today);
+
+        FilterDateDialog dialog = FilterDateDialog.newInstance(
+                earliest != -1 ? earliest : 0,
+                maxDate);
         dialog.setOnDateFilterListener(new FilterDateDialog.OnDateFilterListener() {
             @Override
             public void onDateRangeSelected(long startMillis, long endMillis) {
-                filterMode = FilterMode.DATE;
                 filterStart = startMillis;
-                filterEnd = endMillis;
+                filterEnd   = endMillis;
+                String from = CurrencyFormatter.toArabicDigits(
+                        pillDateFmt.format(new Date(startMillis)));
+                String to = CurrencyFormatter.toArabicDigits(
+                        pillDateFmt.format(new Date(endMillis)));
+                filterDateLabel = getString(R.string.filter_pill_date, from, to);
+                updatePills();
                 loadPurchases();
             }
             @Override
-            public void onFilterCleared() { clearFilter(); }
+            public void onFilterCleared() { clearAllFilters(); }
         });
         dialog.show(getChildFragmentManager(), "filter_date");
     }
 
-    private void clearFilter() {
-        filterMode = FilterMode.NONE;
+    private void clearAllFilters() {
         filteredCategoryId = -1;
+        filteredCategoryName = null;
+        filterStart = -1;
+        filterEnd   = -1;
+        filterDateLabel = null;
+        searchQuery = "";
+        isClearing = true;
+        etSearch.setText("");
+        isClearing = false;
+        updatePills();
         loadPurchases();
     }
 
@@ -221,5 +374,17 @@ public class PurchasesFragment extends Fragment
                 })
                 .setNegativeButton(R.string.btn_cancel, null)
                 .show();
+    }
+
+    private int obtainAttrColor(int attr) {
+        int[] attrs = {attr};
+        android.content.res.TypedArray ta = requireContext().obtainStyledAttributes(attrs);
+        int color = ta.getColor(0, 0xFF808080);
+        ta.recycle();
+        return color;
+    }
+
+    private int dpToPx(float dp) {
+        return Math.round(dp * requireContext().getResources().getDisplayMetrics().density);
     }
 }
