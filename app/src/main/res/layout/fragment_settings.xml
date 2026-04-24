@@ -170,17 +170,6 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/tv_budget_locked"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:drawablePadding="4dp"
-                    android:text="@string/budget_locked_hint"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-
                 <!-- Budget period -->
                 <TextView
                     android:layout_width="wrap_content"

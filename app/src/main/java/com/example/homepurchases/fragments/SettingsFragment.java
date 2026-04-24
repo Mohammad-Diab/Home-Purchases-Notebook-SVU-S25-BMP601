@@ -36,7 +36,7 @@ import java.util.Locale;
 public class SettingsFragment extends Fragment {
 
     private Spinner spinnerDarkMode;
-    private TextView tvAccentName, tvBudgetLocked;
+    private TextView tvAccentName;
     private AppCompatImageView[] accentSwatches;
     private TextInputEditText etBudgetAmount;
     private Spinner spinnerPeriod, spinnerResetDay;
@@ -77,7 +77,6 @@ public class SettingsFragment extends Fragment {
         spinnerDarkMode = view.findViewById(R.id.spinner_dark_mode);
         tvAccentName    = view.findViewById(R.id.tv_accent_name);
         etBudgetAmount  = view.findViewById(R.id.et_budget_amount);
-        tvBudgetLocked  = view.findViewById(R.id.tv_budget_locked);
         spinnerPeriod   = view.findViewById(R.id.spinner_period);
         spinnerResetDay = view.findViewById(R.id.spinner_reset_day);
         layoutResetDay  = view.findViewById(R.id.layout_reset_day);
@@ -216,24 +215,24 @@ public class SettingsFragment extends Fragment {
             if (!hasFocus && !isInitializing) saveBudgetAmount();
         });
 
-        // Period spinner
+        // Period spinner — guard by value comparison (Spinner fires onItemSelected async)
         spinnerPeriod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
-                if (isInitializing) return;
+                if (SettingsManager.getBudgetPeriod(requireContext()) == pos) return;
                 SettingsManager.saveBudgetPeriod(requireContext(), pos);
                 updateResetDaySpinner(pos, 0);
             }
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // Reset day spinner
+        // Reset day spinner — guard by value comparison (Spinner fires onItemSelected async)
         spinnerResetDay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
-                if (isInitializing) return;
                 int period = spinnerPeriod.getSelectedItemPosition();
                 int day = (period == 1) ? pos : pos + 1;
+                if (SettingsManager.getBudgetResetDay(requireContext()) == day) return;
                 SettingsManager.saveBudgetResetDay(requireContext(), day);
             }
             @Override public void onNothingSelected(AdapterView<?> parent) {}
@@ -286,29 +285,23 @@ public class SettingsFragment extends Fragment {
     private void refreshBudgetField() {
         float budgetNewSP = SettingsManager.getBudgetAmount(requireContext());
         if (budgetNewSP > 0) {
-            etBudgetAmount.setText(CurrencyFormatter.formatAmount(budgetNewSP, requireContext()));
-            etBudgetAmount.setEnabled(false);
-            tvBudgetLocked.setVisibility(View.VISIBLE);
-        } else {
-            etBudgetAmount.setEnabled(true);
-            tvBudgetLocked.setVisibility(View.GONE);
+            double display = CurrencyFormatter.toDisplayAmount(budgetNewSP, requireContext());
+            String text = display == (long) display
+                    ? String.valueOf((long) display)
+                    : String.valueOf(display);
+            etBudgetAmount.setText(text);
         }
     }
 
     private void saveBudgetAmount() {
-        // Once a budget is set it cannot be changed
-        if (SettingsManager.getBudgetAmount(requireContext()) > 0) return;
-
-        String text = etBudgetAmount.getText().toString().trim();
+        String text = etBudgetAmount.getText() != null
+                ? etBudgetAmount.getText().toString().trim() : "";
         if (text.isEmpty()) return;
-
         try {
             double displayAmount = Double.parseDouble(text);
             if (displayAmount <= 0) return;
             double newSP = CurrencyFormatter.toStorageAmount(displayAmount, requireContext());
             SettingsManager.saveBudgetAmount(requireContext(), (float) newSP);
-            etBudgetAmount.setEnabled(false);
-            tvBudgetLocked.setVisibility(View.VISIBLE);
         } catch (NumberFormatException e) {
             Log.e("SettingsFragment", "invalid budget input: " + e.getMessage());
         }
