@@ -7,8 +7,9 @@ An Android app (Java) for tracking daily home purchases with budget management, 
 
 ## Features
 
-- Add, edit, and delete purchases
-- Organize purchases by category with custom icons
+- Add, edit, and delete purchases with swipe-to-reveal edit/delete actions
+- Organize purchases by category with custom icons; category shown as outlined pill on each card
+- Smart search bar with inline filter pills — category, date range, and text search stack independently (AND logic); backspace on empty field pops the last active filter
 - Budget tracking with daily / weekly / monthly periods; home screen shows current and previous period spend
 - Spending statistics with category breakdown
 - 2 modes (Light / Dark) × 4 accent colors = 8 theme combinations
