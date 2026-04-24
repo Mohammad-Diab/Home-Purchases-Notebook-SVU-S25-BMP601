@@ -24,7 +24,6 @@ public class BudgetManager {
                 break;
 
             case WEEKLY:
-                // resetDay: 0=Sat(7), 1=Sun(1), 2=Mon(2)...6=Fri(6)
                 int targetDayOfWeek = resetDayToCalendar(resetDay);
                 start = (Calendar) now.clone();
                 startOfDay(start);
@@ -37,12 +36,10 @@ public class BudgetManager {
                 int day = resetDay;
                 start.set(Calendar.DAY_OF_MONTH, 1);
                 startOfDay(start);
-                // Cap reset day to last day of current month
                 int lastDayThisMonth = start.getActualMaximum(Calendar.DAY_OF_MONTH);
                 int actualDay = Math.min(day, lastDayThisMonth);
                 start.set(Calendar.DAY_OF_MONTH, actualDay);
 
-                // If we haven't reached reset day this month yet, go to previous month
                 if (start.after(now)) {
                     start.add(Calendar.MONTH, -1);
                     int lastDayPrevMonth = start.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -105,7 +102,6 @@ public class BudgetManager {
                 cal.add(Calendar.DAY_OF_YEAR, -1);
                 break;
             case WEEKLY:
-                // walk back from one day before current period start to find previous reset weekday
                 int targetDay = resetDayToCalendar(resetDay);
                 cal.add(Calendar.DAY_OF_YEAR, -1);
                 while (cal.get(Calendar.DAY_OF_WEEK) != targetDay) {
@@ -114,7 +110,6 @@ public class BudgetManager {
                 startOfDay(cal);
                 break;
             case MONTHLY:
-                // go back one month then re-apply reset day capping (same logic as getCurrentPeriodStart)
                 cal.add(Calendar.MONTH, -1);
                 int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
                 cal.set(Calendar.DAY_OF_MONTH, Math.min(resetDay, lastDay));
@@ -135,7 +130,6 @@ public class BudgetManager {
         return getSpentThisPeriod(context) > getBudgetAmount(context);
     }
 
-    // Maps our reset day (0=Sat..6=Fri) to Calendar day constants
     private static int resetDayToCalendar(int resetDay) {
         switch (resetDay) {
             case 0: return Calendar.SATURDAY;

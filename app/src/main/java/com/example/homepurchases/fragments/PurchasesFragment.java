@@ -60,7 +60,6 @@ public class PurchasesFragment extends Fragment
     private PurchaseDAO purchaseDAO;
     private CategoryDAO categoryDAO;
 
-    // Filter state — all three stack independently
     private int filteredCategoryId = -1;
     private String filteredCategoryName = null;
     private long filterStart = -1, filterEnd = -1;
@@ -83,7 +82,7 @@ public class PurchasesFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        isClearing = true; // block TextWatcher until onViewStateRestored
+        isClearing = true;
 
         purchaseDAO      = new PurchaseDAO(requireContext());
         categoryDAO      = new CategoryDAO(requireContext());
@@ -100,7 +99,6 @@ public class PurchasesFragment extends Fragment
 
         requireActivity().setTitle(R.string.tab_purchases);
 
-        // Outlined rounded background on the container that holds scroll + clear button
         View searchContainer = view.findViewById(R.id.search_input_container);
         int borderColor = obtainAttrColor(android.R.attr.textColorSecondary);
         GradientDrawable searchBg = new GradientDrawable();
@@ -140,7 +138,7 @@ public class PurchasesFragment extends Fragment
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        isClearing = false; // view state fully restored — TextWatcher can respond to real input now
+        isClearing = false;
     }
 
     @Override
@@ -201,20 +199,17 @@ public class PurchasesFragment extends Fragment
 
         boolean anyActive = filteredCategoryId != -1 || filterStart != -1 || !searchQuery.isEmpty();
 
-        // Filter button tint: colorPrimary when any filter active
         int tintColor = anyActive
                 ? obtainAttrColor(com.google.android.material.R.attr.colorPrimary)
                 : obtainAttrColor(android.R.attr.textColorSecondary);
         ImageViewCompat.setImageTintList(btnFilter, ColorStateList.valueOf(tintColor));
 
-        // Clear button visibility
         if (btnClearSearch != null) {
             btnClearSearch.setVisibility(anyActive ? View.VISIBLE : View.GONE);
         }
     }
 
     private void removeLastFilter() {
-        // Pop filters in reverse display order: date → category
         if (filterStart != -1) {
             filterStart = -1;
             filterEnd = -1;

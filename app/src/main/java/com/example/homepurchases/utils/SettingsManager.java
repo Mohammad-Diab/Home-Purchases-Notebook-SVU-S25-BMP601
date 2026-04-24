@@ -17,8 +17,8 @@ public class SettingsManager {
     public static final int MODE_LIGHT  = 0;
     public static final int MODE_DARK   = 1;
 
-    public static final int CURRENCY_NEW = 0;  // ل.س جديدة
-    public static final int CURRENCY_OLD = 1;  // ل.س قديمة
+    public static final int CURRENCY_NEW = 0;
+    public static final int CURRENCY_OLD = 1;
 
     private static SharedPreferences prefs(Context context) {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -57,15 +57,13 @@ public class SettingsManager {
     }
 
     public static int getBudgetPeriod(Context context) {
-        return prefs(context).getInt(KEY_BUDGET_PERIOD, 2); // default: MONTHLY
+        return prefs(context).getInt(KEY_BUDGET_PERIOD, 2);
     }
 
     public static void saveBudgetPeriod(Context context, int period) {
         prefs(context).edit().putInt(KEY_BUDGET_PERIOD, period).apply();
     }
 
-    // Weekly: 0=Sat, 1=Sun, 2=Mon, 3=Tue, 4=Wed, 5=Thu, 6=Fri
-    // Monthly: 1–31
     public static int getBudgetResetDay(Context context) {
         return prefs(context).getInt(KEY_BUDGET_RESET_DAY, 1);
     }

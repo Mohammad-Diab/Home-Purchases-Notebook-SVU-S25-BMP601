@@ -32,11 +32,9 @@ import java.util.Map;
 
 public class StatisticsFragment extends Fragment {
 
-    // 0 = by category, 1 = by date
     private static final int VIEW_CATEGORY = 0;
     private static final int VIEW_DATE     = 1;
 
-    // period type indices matching stats_period_options
     private static final int PERIOD_DAY   = 0;
     private static final int PERIOD_WEEK  = 1;
     private static final int PERIOD_MONTH = 2;
@@ -89,7 +87,6 @@ public class StatisticsFragment extends Fragment {
     }
 
     private void setupSpinners() {
-        // View switcher
         ArrayAdapter<String> viewAdapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -97,7 +94,6 @@ public class StatisticsFragment extends Fragment {
         viewAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerView.setAdapter(viewAdapter);
 
-        // Period spinner
         ArrayAdapter<String> periodAdapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -105,7 +101,6 @@ public class StatisticsFragment extends Fragment {
         periodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPeriod.setAdapter(periodAdapter);
 
-        // Default period = budget period from settings (Daily→0, Weekly→1, Monthly→2)
         int budgetPeriod = SettingsManager.getBudgetPeriod(requireContext());
         int defaultPeriod = (budgetPeriod >= PERIOD_DAY && budgetPeriod <= PERIOD_MONTH)
                 ? budgetPeriod : PERIOD_MONTH;
@@ -207,10 +202,8 @@ public class StatisticsFragment extends Fragment {
     private String formatPeriodLabel(String sqlPeriod, int periodType) {
         switch (periodType) {
             case PERIOD_DAY:
-                // "2025-01-15" → "٢٠٢٥/٠١/١٥"
                 return CurrencyFormatter.toArabicDigits(sqlPeriod.replace("-", "/"));
             case PERIOD_WEEK: {
-                // "2025-03" → "أسبوع ٠٣ / ٢٠٢٥"
                 String[] parts = sqlPeriod.split("-");
                 if (parts.length == 2) {
                     return getString(R.string.stats_week_label,
@@ -220,10 +213,8 @@ public class StatisticsFragment extends Fragment {
                 return CurrencyFormatter.toArabicDigits(sqlPeriod);
             }
             case PERIOD_MONTH:
-                // "2025-01" → "٢٠٢٥/٠١"
                 return CurrencyFormatter.toArabicDigits(sqlPeriod.replace("-", "/"));
             case PERIOD_YEAR:
-                // "2025" → "٢٠٢٥"
                 return CurrencyFormatter.toArabicDigits(sqlPeriod);
             default:
                 return CurrencyFormatter.toArabicDigits(sqlPeriod);

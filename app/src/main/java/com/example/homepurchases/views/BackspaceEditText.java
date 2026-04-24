@@ -43,7 +43,6 @@ public class BackspaceEditText extends AppCompatEditText {
     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
         return new InputConnectionWrapper(super.onCreateInputConnection(outAttrs), true) {
 
-            // When the field is empty any deleteSurroundingText call means backspace
             @Override
             public boolean deleteSurroundingText(int beforeLength, int afterLength) {
                 if (backspaceListener != null && BackspaceEditText.this.length() == 0) {

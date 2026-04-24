@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Elevated search header -->
+        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
             android:paddingTop="6dp"
             android:paddingBottom="6dp">
 
-            <!-- Magnifier icon -->
+            
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -31,7 +31,7 @@
                 android:src="@drawable/ic_search"
                 android:tint="?android:attr/textColorSecondary" />
 
-            <!-- Search input container: rounded outlined border set programmatically -->
+            
             <LinearLayout
                 android:id="@+id/search_input_container"
                 android:layout_width="0dp"
@@ -57,7 +57,7 @@
                         android:paddingTop="6dp"
                         android:paddingBottom="6dp">
 
-                        <!-- Active filter pills injected here -->
+                        
                         <LinearLayout
                             android:id="@+id/pills_container"
                             android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal" />
 
-                        <!-- Search text -->
+                        
                         <com.example.homepurchases.views.BackspaceEditText
                             android:id="@+id/et_search"
                             android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
                     </LinearLayout>
                 </HorizontalScrollView>
 
-                <!-- Clear button — inside the border, visible when anything is active -->
+                
                 <ImageButton
                     android:id="@+id/btn_clear_search"
                     android:layout_width="32dp"
@@ -95,7 +95,7 @@
 
             </LinearLayout>
 
-            <!-- Filter button — tinted colorPrimary when any filter is active -->
+            
             <ImageButton
                 android:id="@+id/btn_filter"
                 android:layout_width="40dp"
@@ -107,7 +107,7 @@
 
         </LinearLayout>
 
-        <!-- List area -->
+        
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

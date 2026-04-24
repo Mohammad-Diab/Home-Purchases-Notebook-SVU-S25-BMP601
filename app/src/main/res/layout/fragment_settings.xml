@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- ===== THEME SECTION ===== -->
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Display mode dropdown -->
+                
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
 
                 </LinearLayout>
 
-                <!-- Divider -->
+                
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -70,7 +70,7 @@
                     android:layout_marginBottom="12dp"
                     android:background="?android:attr/listDivider" />
 
-                <!-- Accent color label -->
+                
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
 
-                <!-- Accent swatches -->
+                
                 <LinearLayout
                     android:id="@+id/layout_accent_swatches"
                     android:layout_width="match_parent"
@@ -131,7 +131,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- ===== BUDGET SECTION ===== -->
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -157,7 +157,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Budget amount -->
+                
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_budget_amount"
                     android:layout_width="match_parent"
@@ -174,7 +174,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Budget period -->
+                
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
                     android:background="@drawable/spinner_background"
                     android:padding="12dp" />
 
-                <!-- Reset day (shown for weekly/monthly) -->
+                
                 <LinearLayout
                     android:id="@+id/layout_reset_day"
                     android:layout_width="match_parent"
@@ -219,7 +219,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- ===== CURRENCY SECTION ===== -->
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -266,7 +266,7 @@
             </RadioGroup>
         </androidx.cardview.widget.CardView>
 
-        <!-- ===== CATEGORIES LINK ===== -->
+        
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -304,7 +304,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- ===== TEST DATA SEED ===== -->
+        
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

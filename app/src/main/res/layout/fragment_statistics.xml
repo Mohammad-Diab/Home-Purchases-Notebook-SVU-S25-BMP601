@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Total Expenses Card -->
+        
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,14 +48,14 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- View switcher: by category / by date -->
+        
         <Spinner
             android:id="@+id/spinner_stats_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
 
-        <!-- Period selector: يوم / أسبوع / شهر / سنة (visible only for date view) -->
+        
         <Spinner
             android:id="@+id/spinner_stats_period"
             android:layout_width="match_parent"
@@ -63,14 +63,14 @@
             android:layout_marginBottom="8dp"
             android:visibility="gone" />
 
-        <!-- Breakdown rows (filled programmatically) -->
+        
         <LinearLayout
             android:id="@+id/layout_category_breakdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-        <!-- No data message -->
+        
         <TextView
             android:id="@+id/tv_no_data"
             android:layout_width="match_parent"

@@ -34,30 +34,26 @@ public class SeedDataManager {
             "منظف أرضيات"
     };
 
-    // Category indices into getAllCategories() (sorted A-Z in Arabic):
-    // 0=أخرى, 1=أدوات, 2=إلكترونيات, 3=ترفيه, 4=تنظيف, 5=صحة, 6=طعام, 7=فواتير, 8=ملابس
-    // 0=أخرى,1=أدوات,2=إلكترونيات,3=ترفيه,4=تنظيف,5=صحة,6=طعام,7=فواتير,8=ملابس — all 9 covered
     private static final int[] CAT_INDICES = {
             6, 4, 2, 8, 2, 5, 0, 1, 2, 8, 6, 7, 7, 3, 4
     };
 
-    // Prices in New SP — calibrated at 1 USD = 130 New SP
     private static final double[] PRICES = {
-            600,   // bread + fresh vegetables  (~$4.6/unit)
-            1500,  // laundry detergent + cleaners (~$11.5)
-            4000,  // electric fan (~$31)
-            3000,  // jeans (~$23)
-            65000, // laptop (~$500)
-            800,   // blood-pressure medication (~$6.2/unit)
-            250,   // pain relievers (~$1.9/unit)
-            5000,  // carpentry tools (~$38)
-            25000, // smart TV (~$192)
-            1200,  // summer shirts (~$9.2/unit)
-            1800,  // weekly grocery bag (~$13.8/bag)
-            1500,  // electricity bill (~$11.5)
-            3000,  // internet subscription (~$23)
-            500,   // streaming subscription (~$3.8/month)
-            800    // floor cleaner (~$6.2)
+            600,
+            1500,
+            4000,
+            3000,
+            65000,
+            800,
+            250,
+            5000,
+            25000,
+            1200,
+            1800,
+            1500,
+            3000,
+            500,
+            800
     };
 
     private static final int[] QUANTITIES = {
@@ -74,9 +70,6 @@ public class SeedDataManager {
             "احتياجات الأسبوع", null, null, "اشتراك شهري", null
     };
 
-    /**
-     * @return true if data was seeded, false if skipped (already > GUARD_THRESHOLD rows)
-     */
     public static boolean seedTestData(Context context) {
         try {
             PurchaseDAO purchaseDAO = new PurchaseDAO(context);

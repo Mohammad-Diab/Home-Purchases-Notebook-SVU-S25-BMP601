@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -10,7 +10,7 @@
     android:background="@android:color/transparent"
     android:clipChildren="true">
 
-    <!-- Back layer: revealed on swipe (end = left side in RTL) -->
+    
     <LinearLayout
         android:id="@+id/layout_swipe_actions"
         android:layout_width="112dp"
@@ -39,7 +39,7 @@
 
     </LinearLayout>
 
-    <!-- Front card: slides left on swipe to reveal actions -->
+    
     <androidx.cardview.widget.CardView
         android:id="@+id/card_front"
         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
             android:paddingTop="14dp"
             android:paddingBottom="14dp">
 
-            <!-- Category icon (start = right side in RTL) -->
+            
             <ImageView
                 android:id="@+id/iv_category_icon"
                 android:layout_width="40dp"
@@ -69,7 +69,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Item name + pill: horizontal packed chain, name wraps naturally -->
+            
             <TextView
                 android:id="@+id/tv_item_name"
                 android:layout_width="0dp"
@@ -104,7 +104,7 @@
                 app:layout_constraintEnd_toStartOf="@id/tv_total_cost"
                 app:layout_constraintStart_toEndOf="@id/tv_item_name" />
 
-            <!-- Date — row 2, below name -->
+            
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
@@ -117,7 +117,7 @@
                 app:layout_constraintStart_toEndOf="@id/iv_category_icon"
                 app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
 
-            <!-- Total cost — vertically centered -->
+            
             <TextView
                 android:id="@+id/tv_total_cost"
                 android:layout_width="wrap_content"

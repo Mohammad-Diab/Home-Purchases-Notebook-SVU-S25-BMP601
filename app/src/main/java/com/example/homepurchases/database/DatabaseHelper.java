@@ -13,7 +13,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_PURCHASES = "purchases";
     public static final String TABLE_CATEGORIES = "categories";
 
-    // purchases columns
     public static final String COL_P_ID = "id";
     public static final String COL_P_ITEM_NAME = "item_name";
     public static final String COL_P_CATEGORY_ID = "category_id";
@@ -23,7 +22,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_P_DATE = "date";
     public static final String COL_P_NOTES = "notes";
 
-    // categories columns
     public static final String COL_C_ID = "id";
     public static final String COL_C_NAME = "name";
     public static final String COL_C_ICON_NAME = "icon_name";
@@ -80,15 +78,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private void seedDefaultCategories(SQLiteDatabase db) {
         String[][] categories = {
-                {"طعام",        "ic_restaurant",      "المواد الغذائية"},
-                {"تنظيف",       "ic_cleaning_services","مواد التنظيف"},
-                {"أدوات",       "ic_build",            "الأدوات والمعدات"},
-                {"ملابس",       "ic_checkroom",        "الملابس والأحذية"},
-                {"إلكترونيات",  "ic_devices",          "الأجهزة الإلكترونية"},
-                {"صحة",         "ic_local_hospital",   "الأدوية والصحة"},
-                {"ترفيه",       "ic_sports_esports",   "الترفيه والهوايات"},
-                {"فواتير",      "ic_receipt",          "الفواتير والمدفوعات"},
-                {"أخرى",        "ic_category",         "مشتريات متنوعة"}
+                {"طعام",        "ic_restaurant",       "المواد الغذائية"},
+                {"تنظيف",       "ic_cleaning_services", "مواد التنظيف"},
+                {"أدوات",       "ic_build",             "الأدوات والمعدات"},
+                {"ملابس",       "ic_checkroom",         "الملابس والأحذية"},
+                {"إلكترونيات",  "ic_devices",           "الأجهزة الإلكترونية"},
+                {"صحة",         "ic_local_hospital",    "الأدوية والصحة"},
+                {"ترفيه",       "ic_sports_esports",    "الترفيه والهوايات"},
+                {"فواتير",      "ic_receipt",           "الفواتير والمدفوعات"},
+                {"أخرى",        "ic_category",          "مشتريات متنوعة"}
         };
 
         for (String[] cat : categories) {

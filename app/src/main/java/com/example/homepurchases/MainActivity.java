@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
         soundManager = new SoundManager(this);
 
-        // Tab switch sound — fires only when moving between distinct top-level tabs
         final int[] prevTopLevelId = {R.id.homeFragment};
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             int id = destination.getId();
@@ -75,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
             if (isTopLevel) prevTopLevelId[0] = id;
         });
 
-        // Sub-screen open sound + AddEditFragment title correction (runs after NavigationUI's listener)
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             int id = destination.getId();
             if (id == R.id.addEditFragment

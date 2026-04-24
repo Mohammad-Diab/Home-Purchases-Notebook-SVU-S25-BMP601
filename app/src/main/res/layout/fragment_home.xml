@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Budget Ring Card -->
+        
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,20 +33,20 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <!-- Arch container: clips the lower half of the full circle view -->
+                
                 <FrameLayout
                     android:layout_width="220dp"
                     android:layout_height="130dp"
                     android:clipChildren="true">
 
-                    <!-- Full circle view; only top 130dp is visible inside this container -->
+                    
                     <com.example.homepurchases.views.ArcProgressView
                         android:id="@+id/progress_budget"
                         android:layout_width="220dp"
                         android:layout_height="220dp"
                         android:layout_gravity="top|center_horizontal" />
 
-                    <!-- Text anchored to the bottom of the container (at the arch opening) -->
+                    
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Total / Last Period Stats -->
+        
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Recent Purchases Header -->
+        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -196,14 +196,14 @@
 
         </LinearLayout>
 
-        <!-- Recent items container (filled programmatically) -->
+        
         <LinearLayout
             android:id="@+id/layout_recent_purchases"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-        <!-- Empty state -->
+        
         <TextView
             android:id="@+id/tv_home_empty"
             android:layout_width="match_parent"

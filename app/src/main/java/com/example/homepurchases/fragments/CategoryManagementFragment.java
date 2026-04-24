@@ -141,14 +141,12 @@ public class CategoryManagementFragment extends Fragment
         TextInputEditText etDesc   = dialogView.findViewById(R.id.et_cat_desc);
         RecyclerView rvIcons       = dialogView.findViewById(R.id.rv_icon_picker);
 
-        // Pre-fill for edit
         String selectedIcon = existing != null ? existing.getIconName() : "ic_category";
         if (existing != null) {
             etName.setText(existing.getName());
             if (existing.getDescription() != null) etDesc.setText(existing.getDescription());
         }
 
-        // Icon picker
         final String[] pickedIcon = {selectedIcon};
         IconPickerAdapter iconAdapter = new IconPickerAdapter(
                 requireContext(),

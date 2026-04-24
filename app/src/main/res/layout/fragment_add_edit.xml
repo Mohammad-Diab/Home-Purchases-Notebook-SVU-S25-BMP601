@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Item Name -->
+        
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_item_name"
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Category -->
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             android:background="@drawable/spinner_background"
             android:padding="12dp" />
 
-        <!-- Price -->
+        
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_price"
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Quantity -->
+        
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_quantity"
             android:layout_width="match_parent"
@@ -82,7 +82,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Date Picker -->
+        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
 
         </LinearLayout>
 
-        <!-- Notes -->
+        
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_notes"
             android:layout_width="match_parent"
@@ -126,7 +126,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Total Cost Display -->
+        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
 
         </LinearLayout>
 
-        <!-- Save Button -->
+        
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_save"
             android:layout_width="match_parent"

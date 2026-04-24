@@ -73,7 +73,7 @@ public class CategoryDAO {
             return result;
         } catch (Exception e) {
             Log.e(TAG, "hasPurchases failed: " + e.getMessage());
-            return true; // safe default: block delete if uncertain
+            return true;
         }
     }
 

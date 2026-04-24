@@ -96,7 +96,6 @@ public class SettingsFragment extends Fragment {
         int accent = SettingsManager.getThemeAccent(requireContext());
         boolean isDark = mode == SettingsManager.MODE_DARK;
 
-        // Mode spinner
         List<String> modeItems = Arrays.asList(
                 getString(R.string.settings_mode_light),
                 getString(R.string.settings_mode_dark));
@@ -106,13 +105,10 @@ public class SettingsFragment extends Fragment {
         spinnerDarkMode.setAdapter(modeAdapter);
         spinnerDarkMode.setSelection(mode);
 
-        // Accent swatches
         updateSwatches(isDark, accent);
 
-        // Budget amount
         refreshBudgetField();
 
-        // Period spinner
         List<String> periods = Arrays.asList(
                 getString(R.string.period_daily),
                 getString(R.string.period_weekly),
@@ -125,11 +121,9 @@ public class SettingsFragment extends Fragment {
         int savedPeriod = SettingsManager.getBudgetPeriod(requireContext());
         spinnerPeriod.setSelection(savedPeriod);
 
-        // Reset day spinner
         updateResetDaySpinner(savedPeriod,
                 SettingsManager.getBudgetResetDay(requireContext()));
 
-        // Currency
         int currency = SettingsManager.getCurrencyType(requireContext());
         rgCurrency.check(currency == SettingsManager.CURRENCY_NEW
                 ? R.id.rb_currency_new : R.id.rb_currency_old);
@@ -162,16 +156,16 @@ public class SettingsFragment extends Fragment {
     }
 
     private void updateResetDaySpinner(int period, int savedResetDay) {
-        if (period == 0) { // DAILY
+        if (period == 0) {
             layoutResetDay.setVisibility(View.GONE);
             return;
         }
         layoutResetDay.setVisibility(View.VISIBLE);
 
         List<String> items;
-        if (period == 1) { // WEEKLY
+        if (period == 1) {
             items = Arrays.asList(getResources().getStringArray(R.array.week_days));
-        } else { // MONTHLY
+        } else {
             items = new ArrayList<>();
             for (int i = 1; i <= 31; i++) {
                 items.add(CurrencyFormatter.toArabicDigits(String.valueOf(i)));
@@ -190,7 +184,6 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setupListeners(View view) {
-        // Display mode spinner — guard by value comparison (Spinner fires onItemSelected async)
         spinnerDarkMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
@@ -201,7 +194,6 @@ public class SettingsFragment extends Fragment {
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // Accent swatches
         for (int i = 0; i < 4; i++) {
             final int index = i;
             accentSwatches[i].setOnClickListener(v -> {
@@ -211,12 +203,10 @@ public class SettingsFragment extends Fragment {
             });
         }
 
-        // Budget amount — save on focus lost
         etBudgetAmount.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus && !isInitializing) saveBudgetAmount();
         });
 
-        // Period spinner — guard by value comparison (Spinner fires onItemSelected async)
         spinnerPeriod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
@@ -227,7 +217,6 @@ public class SettingsFragment extends Fragment {
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // Reset day spinner — guard by value comparison (Spinner fires onItemSelected async)
         spinnerResetDay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
@@ -239,7 +228,6 @@ public class SettingsFragment extends Fragment {
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // Currency
         rgCurrency.setOnCheckedChangeListener((group, checkedId) -> {
             if (isInitializing) return;
             int type = checkedId == R.id.rb_currency_new
@@ -249,12 +237,10 @@ public class SettingsFragment extends Fragment {
             refreshBudgetField();
         });
 
-        // Manage categories
         view.findViewById(R.id.btn_manage_categories).setOnClickListener(v ->
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_settings_to_categories));
 
-        // Seed test data
         view.findViewById(R.id.btn_seed_test_data).setOnClickListener(v -> {
             if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).getSoundManager().playConfirm();
@@ -276,7 +262,6 @@ public class SettingsFragment extends Fragment {
                     .show();
         });
 
-        // Reset all data
         view.findViewById(R.id.btn_reset_data).setOnClickListener(v -> {
             if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).getSoundManager().playConfirm();

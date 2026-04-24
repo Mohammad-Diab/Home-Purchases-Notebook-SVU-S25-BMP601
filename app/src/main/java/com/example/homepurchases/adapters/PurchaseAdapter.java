@@ -87,7 +87,6 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
             holder.ivCategoryIcon.setImageResource(R.drawable.ic_category);
         }
 
-        // Reset swipe state on every bind (handles recycled views)
         holder.cardFront.animate().cancel();
         holder.cardFront.setTranslationX(0);
 

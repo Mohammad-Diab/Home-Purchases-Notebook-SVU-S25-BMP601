@@ -8,12 +8,10 @@ import com.example.homepurchases.R;
 public class ThemeManager {
 
     private static final int[][] THEME_MAP = {
-            // Light mode: accents 0-3
             {R.style.Theme_HomePurchases_Light_0,
              R.style.Theme_HomePurchases_Light_1,
              R.style.Theme_HomePurchases_Light_2,
              R.style.Theme_HomePurchases_Light_3},
-            // Dark mode: accents 0-3
             {R.style.Theme_HomePurchases_Dark_0,
              R.style.Theme_HomePurchases_Dark_1,
              R.style.Theme_HomePurchases_Dark_2,

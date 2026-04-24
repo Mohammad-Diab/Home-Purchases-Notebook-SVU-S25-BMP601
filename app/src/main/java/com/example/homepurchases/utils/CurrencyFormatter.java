@@ -9,7 +9,6 @@ public class CurrencyFormatter {
 
     private static final String LABEL_NEW = "ل.س ج";
     private static final String LABEL_OLD = "ل.س ق";
-    // 1 New SP = 100 Old SP
     private static final double NEW_TO_OLD = 100.0;
 
     public static String format(double amountInNewSP, Context context) {
@@ -42,7 +41,6 @@ public class CurrencyFormatter {
         return sb.toString();
     }
 
-    // Formatted number without label — use for locked/read-only display fields
     public static String formatAmount(double amountInNewSP, Context context) {
         NumberFormat nf = NumberFormat.getNumberInstance(new Locale("ar"));
         nf.setMaximumFractionDigits(2);
@@ -50,7 +48,6 @@ public class CurrencyFormatter {
         return toArabicDigits(nf.format(toDisplayAmount(amountInNewSP, context)));
     }
 
-    // Returns the raw display amount without label (for editable input fields)
     public static double toDisplayAmount(double amountInNewSP, Context context) {
         if (SettingsManager.getCurrencyType(context) == SettingsManager.CURRENCY_OLD) {
             return amountInNewSP * NEW_TO_OLD;
@@ -58,7 +55,6 @@ public class CurrencyFormatter {
         return amountInNewSP;
     }
 
-    // Converts user input back to New SP for storage
     public static double toStorageAmount(double displayAmount, Context context) {
         if (SettingsManager.getCurrencyType(context) == SettingsManager.CURRENCY_OLD) {
             return displayAmount / NEW_TO_OLD;

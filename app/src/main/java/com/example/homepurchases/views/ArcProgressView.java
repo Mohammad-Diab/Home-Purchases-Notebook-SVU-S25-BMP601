@@ -51,17 +51,13 @@ public class ArcProgressView extends View {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        // Oval is a full circle fitting the view width.
-        // The view height is ~half the width, so only the top arch is visible.
         float inset = strokeWidth / 2 + 4 * getResources().getDisplayMetrics().density;
         arcOval.set(inset, inset, w - inset, w - inset);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // Full track arch
         canvas.drawArc(arcOval, START_ANGLE, SWEEP_TOTAL, false, trackPaint);
-        // Filled indicator
         if (progress > 0) {
             float sweep = SWEEP_TOTAL * progress / 100f;
             canvas.drawArc(arcOval, START_ANGLE, sweep, false, indicatorPaint);
