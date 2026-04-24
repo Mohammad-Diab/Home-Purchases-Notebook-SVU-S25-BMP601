@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.homepurchases.MainActivity;
 import com.example.homepurchases.R;
 import com.example.homepurchases.database.CategoryDAO;
 import com.example.homepurchases.database.PurchaseDAO;
@@ -76,9 +77,13 @@ public class HomeFragment extends Fragment {
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_home_to_statistics));
 
-        view.findViewById(R.id.fab_add).setOnClickListener(v ->
-                Navigation.findNavController(requireView())
-                        .navigate(R.id.action_home_to_addEdit));
+        view.findViewById(R.id.fab_add).setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).getSoundManager().playFab();
+            }
+            Navigation.findNavController(requireView())
+                    .navigate(R.id.action_home_to_addEdit);
+        });
 
         loadData();
     }

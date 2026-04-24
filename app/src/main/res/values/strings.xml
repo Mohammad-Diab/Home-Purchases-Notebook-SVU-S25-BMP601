@@ -14,7 +14,7 @@
     <string name="home_recent_purchases">آخر المشتريات</string>
     <string name="home_view_all_stats">عرض كل الإحصائيات</string>
     <string name="home_no_budget_set">لم يتم تحديد ميزانية</string>
-    <string name="home_empty">لا توجد مشتريات بعد.\nأضف أول مشترى لك!</string>
+    <string name="home_empty">لا توجد مشتريات بعد.\nأضف أول عملية شراء لك!</string>
 
     <!-- Purchases fragment -->
     <string name="purchases_title">المشتريات</string>
@@ -24,8 +24,8 @@
     <string name="empty_filtered">لا توجد نتائج مطابقة</string>
 
     <!-- Add/Edit fragment -->
-    <string name="add_purchase">إضافة مشترى</string>
-    <string name="edit_purchase">تعديل مشترى</string>
+    <string name="add_purchase">إضافة عنصر</string>
+    <string name="edit_purchase">تعديل عنصر</string>
     <string name="label_item_name">اسم المنتج</string>
     <string name="label_category">الفئة</string>
     <string name="label_price">السعر</string>
@@ -49,7 +49,7 @@
 
     <!-- Delete confirmation -->
     <string name="dialog_delete_title">تأكيد الحذف</string>
-    <string name="dialog_delete_message">هل أنت متأكد من حذف هذا المشترى؟</string>
+    <string name="dialog_delete_message">هل أنت متأكد من حذف هذا العنصر؟</string>
     <string name="btn_confirm">تأكيد</string>
     <string name="btn_cancel">إلغاء</string>
 
@@ -138,8 +138,8 @@
     <!-- Test data seed -->
     <string name="btn_seed_test_data">ملء بيانات تجريبية</string>
     <string name="seed_confirm_title">ملء البيانات التجريبية</string>
-    <string name="seed_confirm_message">سيتم إضافة ١٥ مشترى تجريبياً موزعاً على جميع الفئات. هل تريد المتابعة؟</string>
-    <string name="seed_data_exists">البيانات موجودة بالفعل — أضف أكثر من ٢٠ مشترى</string>
+    <string name="seed_confirm_message">سيتم إضافة ١٥ عنصرا للتجربة موزعين على جميع الفئات. هل تريد المتابعة؟</string>
+    <string name="seed_data_exists">البيانات موجودة بالفعل — قاعدة البيانات تحتوي على أكثر من ١٥ عنصرا</string>
     <string name="seed_success">تمت إضافة البيانات التجريبية بنجاح</string>
 
     <!-- Reset data -->

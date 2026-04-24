@@ -133,36 +133,40 @@ public class CategoryManagementFragment extends Fragment
         int title = existing == null ? R.string.add_category : R.string.edit_category;
         int confirmMsg = existing == null ? R.string.category_added : R.string.category_updated;
 
-        new AlertDialog.Builder(requireContext())
+        AlertDialog dialog = new AlertDialog.Builder(requireContext())
                 .setTitle(title)
                 .setView(dialogView)
-                .setPositiveButton(R.string.btn_save, (d, w) -> {
-                    String name = etName.getText().toString().trim();
-                    if (name.isEmpty()) {
-                        layoutName.setError(getString(R.string.label_category_name));
-                        return;
-                    }
-                    try {
-                        String desc = etDesc.getText().toString().trim();
-                        Category category = new Category(
-                                existing == null ? 0 : existing.getId(),
-                                name,
-                                pickedIcon[0],
-                                desc.isEmpty() ? null : desc);
-
-                        if (existing == null) {
-                            categoryDAO.insertCategory(category);
-                        } else {
-                            categoryDAO.updateCategory(category);
-                        }
-                        Toast.makeText(requireContext(), confirmMsg, Toast.LENGTH_SHORT).show();
-                        loadCategories();
-                    } catch (Exception e) {
-                        Log.e("CategoryMgmtFragment", "save category failed: " + e.getMessage());
-                        Toast.makeText(requireContext(), R.string.error_database, Toast.LENGTH_SHORT).show();
-                    }
-                })
+                .setPositiveButton(R.string.btn_save, null)
                 .setNegativeButton(R.string.btn_cancel, null)
                 .show();
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String name = etName.getText().toString().trim();
+            if (name.isEmpty()) {
+                layoutName.setError(getString(R.string.label_category_name));
+                return;
+            }
+            layoutName.setError(null);
+            try {
+                String desc = etDesc.getText().toString().trim();
+                Category category = new Category(
+                        existing == null ? 0 : existing.getId(),
+                        name,
+                        pickedIcon[0],
+                        desc.isEmpty() ? null : desc);
+
+                if (existing == null) {
+                    categoryDAO.insertCategory(category);
+                } else {
+                    categoryDAO.updateCategory(category);
+                }
+                Toast.makeText(requireContext(), confirmMsg, Toast.LENGTH_SHORT).show();
+                loadCategories();
+                dialog.dismiss();
+            } catch (Exception e) {
+                Log.e("CategoryMgmtFragment", "save category failed: " + e.getMessage());
+                Toast.makeText(requireContext(), R.string.error_database, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

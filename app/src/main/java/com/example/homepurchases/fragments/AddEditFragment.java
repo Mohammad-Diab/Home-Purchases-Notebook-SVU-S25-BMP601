@@ -72,10 +72,6 @@ public class AddEditFragment extends Fragment {
         }
 
         bindViews(view);
-        requireActivity().setTitle(purchaseId == -1
-                ? getString(R.string.add_purchase)
-                : getString(R.string.edit_purchase));
-
         loadCategories();
         tvSelectedDate.setText(CurrencyFormatter.toArabicDigits(dateFormat.format(new Date(selectedDateMillis))));
         setupTotalWatcher();
@@ -99,6 +95,25 @@ public class AddEditFragment extends Fragment {
         tvTotalCost     = view.findViewById(R.id.tv_total_cost);
         btnPickDate     = view.findViewById(R.id.btn_pick_date);
         btnSave         = view.findViewById(R.id.btn_save);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int prevCategoryId = -1;
+        int pos = spinnerCategory.getSelectedItemPosition();
+        if (pos >= 0 && pos < categories.size()) {
+            prevCategoryId = categories.get(pos).getId();
+        }
+        loadCategories();
+        if (prevCategoryId != -1) {
+            for (int i = 0; i < categories.size(); i++) {
+                if (categories.get(i).getId() == prevCategoryId) {
+                    spinnerCategory.setSelection(i);
+                    break;
+                }
+            }
+        }
     }
 
     private void loadCategories() {

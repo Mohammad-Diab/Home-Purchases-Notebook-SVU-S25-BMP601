@@ -28,22 +28,31 @@ public class BackspaceEditText extends AppCompatEditText {
     }
 
     @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (backspaceListener != null
+                && event.getAction() == KeyEvent.ACTION_DOWN
+                && event.getKeyCode() == KeyEvent.KEYCODE_DEL
+                && length() == 0) {
+            backspaceListener.onBackspaceWhenEmpty();
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
         return new InputConnectionWrapper(super.onCreateInputConnection(outAttrs), true) {
 
-            // Soft keyboards use deleteSurroundingText
+            // When the field is empty any deleteSurroundingText call means backspace
             @Override
             public boolean deleteSurroundingText(int beforeLength, int afterLength) {
-                if (backspaceListener != null
-                        && beforeLength == 1 && afterLength == 0
-                        && BackspaceEditText.this.length() == 0) {
+                if (backspaceListener != null && BackspaceEditText.this.length() == 0) {
                     backspaceListener.onBackspaceWhenEmpty();
                     return true;
                 }
                 return super.deleteSurroundingText(beforeLength, afterLength);
             }
 
-            // Hardware keyboards / some virtual keyboards use key events
             @Override
             public boolean sendKeyEvent(KeyEvent event) {
                 if (backspaceListener != null

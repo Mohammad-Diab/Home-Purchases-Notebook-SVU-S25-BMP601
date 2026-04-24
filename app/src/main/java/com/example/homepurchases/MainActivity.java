@@ -60,6 +60,16 @@ public class MainActivity extends AppCompatActivity {
             bottomNav.setVisibility(isTopLevel ? View.VISIBLE : View.GONE);
         });
 
+        // Runs after NavigationUI's listener — corrects AddEditFragment title based on purchaseId arg
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.addEditFragment) {
+                int purchaseId = arguments != null ? arguments.getInt("purchaseId", -1) : -1;
+                getSupportActionBar().setTitle(purchaseId == -1
+                        ? getString(R.string.add_purchase)
+                        : getString(R.string.edit_purchase));
+            }
+        });
+
         soundManager = new SoundManager(this);
     }
 

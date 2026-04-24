@@ -36,8 +36,9 @@ public class SeedDataManager {
 
     // Category indices into getAllCategories() (sorted A-Z in Arabic):
     // 0=أخرى, 1=أدوات, 2=إلكترونيات, 3=ترفيه, 4=تنظيف, 5=صحة, 6=طعام, 7=فواتير, 8=ملابس
+    // 0=أخرى,1=أدوات,2=إلكترونيات,3=ترفيه,4=تنظيف,5=صحة,6=طعام,7=فواتير,8=ملابس — all 9 covered
     private static final int[] CAT_INDICES = {
-            6, 4, 2, 8, 2, 5, 5, 1, 2, 8, 6, 7, 7, 3, 4
+            6, 4, 2, 8, 2, 5, 0, 1, 2, 8, 6, 7, 7, 3, 4
     };
 
     // Prices in New SP — calibrated at 1 USD = 130 New SP
@@ -79,7 +80,7 @@ public class SeedDataManager {
     public static boolean seedTestData(Context context) {
         try {
             PurchaseDAO purchaseDAO = new PurchaseDAO(context);
-            if (purchaseDAO.getPurchaseCount() > GUARD_THRESHOLD) {
+            if (purchaseDAO.getPurchaseCount() >= ITEM_NAMES.length) {
                 return false;
             }
 
