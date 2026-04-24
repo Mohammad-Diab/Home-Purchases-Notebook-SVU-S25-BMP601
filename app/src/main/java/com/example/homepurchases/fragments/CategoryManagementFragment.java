@@ -127,7 +127,7 @@ public class CategoryManagementFragment extends Fragment
                 IconPickerAdapter.AVAILABLE_ICONS,
                 selectedIcon,
                 iconName -> pickedIcon[0] = iconName);
-        rvIcons.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+        rvIcons.setLayoutManager(new GridLayoutManager(requireContext(), 4));
         rvIcons.setAdapter(iconAdapter);
 
         int title = existing == null ? R.string.add_category : R.string.edit_category;
