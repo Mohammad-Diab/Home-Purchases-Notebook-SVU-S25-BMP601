@@ -51,6 +51,7 @@
     <string name="dialog_delete_title">تأكيد الحذف</string>
     <string name="dialog_delete_message">هل أنت متأكد من حذف هذا العنصر؟</string>
     <string name="btn_confirm">تأكيد</string>
+    <string name="btn_close">إغلاق</string>
     <string name="btn_cancel">إلغاء</string>
 
     <!-- Statistics fragment -->

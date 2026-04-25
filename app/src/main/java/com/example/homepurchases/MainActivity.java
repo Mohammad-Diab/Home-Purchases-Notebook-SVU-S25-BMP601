@@ -116,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.about_title)
                     .setView(dialogView)
-                    .setPositiveButton(R.string.btn_confirm, null)
+                    .setPositiveButton(R.string.btn_close, null)
+                    .setOnDismissListener(d -> soundManager.playCancel())
                     .show();
             return true;
         }
