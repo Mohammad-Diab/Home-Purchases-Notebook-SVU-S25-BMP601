@@ -89,6 +89,7 @@
     <string name="settings_display_mode">وضع العرض</string>
     <string name="settings_mode_light">الوضع الفاتح</string>
     <string name="settings_mode_dark">الوضع الداكن</string>
+    <string name="settings_mode_auto">تلقائي (النظام)</string>
     <string name="settings_accent_color">لون التمييز</string>
     <string name="settings_budget_section">الميزانية</string>
     <string name="settings_budget_amount">مبلغ الميزانية</string>
@@ -162,4 +163,15 @@
 
     <!-- Budget lock -->
     <string name="budget_locked_hint">الميزانية مقفلة بعد التعيين — لا يمكن تغييرها</string>
+
+    <!-- About dialog -->
+    <string name="about_title">من نحن</string>
+    <string name="about_university">الجامعة الافتراضية السورية</string>
+    <string name="about_faculty">كلية الهندسة المعلوماتية</string>
+    <string name="about_subject">برمجة تطبيقات النقال</string>
+    <string name="about_teacher">المدرس المشرف: محمد مازن المصطفى</string>
+    <string name="about_team_header">إعداد الطلاب</string>
+    <string name="about_col_name">الاسم</string>
+    <string name="about_col_id">الرقم</string>
+    <string name="about_col_class">الصف</string>
 </resources>

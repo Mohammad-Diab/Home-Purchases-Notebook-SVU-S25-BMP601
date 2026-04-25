@@ -94,16 +94,17 @@ public class SettingsFragment extends Fragment {
     private void populateControls() {
         int mode   = SettingsManager.getThemeMode(requireContext());
         int accent = SettingsManager.getThemeAccent(requireContext());
-        boolean isDark = mode == SettingsManager.MODE_DARK;
+        boolean isDark = com.example.homepurchases.utils.ThemeManager.resolvedDarkMode(requireActivity());
 
         List<String> modeItems = Arrays.asList(
+                getString(R.string.settings_mode_auto),
                 getString(R.string.settings_mode_light),
                 getString(R.string.settings_mode_dark));
         ArrayAdapter<String> modeAdapter = new ArrayAdapter<>(
                 requireContext(), android.R.layout.simple_spinner_item, modeItems);
         modeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDarkMode.setAdapter(modeAdapter);
-        spinnerDarkMode.setSelection(mode);
+        spinnerDarkMode.setSelection(modeToPosition(mode));
 
         updateSwatches(isDark, accent);
 
@@ -187,8 +188,9 @@ public class SettingsFragment extends Fragment {
         spinnerDarkMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
-                if (SettingsManager.getThemeMode(requireContext()) == pos) return;
-                SettingsManager.saveThemeMode(requireContext(), pos);
+                int newMode = positionToMode(pos);
+                if (SettingsManager.getThemeMode(requireContext()) == newMode) return;
+                SettingsManager.saveThemeMode(requireContext(), newMode);
                 ThemeManager.restartApp(requireActivity());
             }
             @Override public void onNothingSelected(AdapterView<?> parent) {}
@@ -296,6 +298,18 @@ public class SettingsFragment extends Fragment {
                     : String.valueOf(display);
             etBudgetAmount.setText(text);
         }
+    }
+
+    private static int modeToPosition(int mode) {
+        if (mode == SettingsManager.MODE_LIGHT) return 1;
+        if (mode == SettingsManager.MODE_DARK)  return 2;
+        return 0;
+    }
+
+    private static int positionToMode(int pos) {
+        if (pos == 1) return SettingsManager.MODE_LIGHT;
+        if (pos == 2) return SettingsManager.MODE_DARK;
+        return SettingsManager.MODE_AUTO;
     }
 
     private void saveBudgetAmount() {

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="top"
+        android:layout_marginBottom="14dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="start">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_university"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_faculty"
+                android:textSize="12sp"
+                android:layout_marginBottom="2dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_subject"
+                android:textSize="12sp"
+                android:layout_marginBottom="2dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_teacher"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_university_logo"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="12dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/about_university" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimary"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_team_header"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="8dp" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*">
+
+        <TableRow android:background="?attr/colorPrimary">
+            <TextView
+                android:padding="8dp"
+                android:text="@string/about_col_name"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:gravity="center" />
+            <TextView
+                android:padding="8dp"
+                android:text="@string/about_col_id"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:gravity="center" />
+            <TextView
+                android:padding="8dp"
+                android:text="@string/about_col_class"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:gravity="center" />
+        </TableRow>
+
+        <TableRow>
+            <TextView android:padding="8dp" android:text="محمد دياب"      android:gravity="center" />
+            <TextView android:padding="8dp" android:text="mohammad_173125" android:gravity="center" />
+            <TextView android:padding="8dp" android:text="C2"             android:gravity="center" />
+        </TableRow>
+
+        <TableRow android:background="#14808080">
+            <TextView android:padding="8dp" android:text="—" android:gravity="center" />
+            <TextView android:padding="8dp" android:text="—" android:gravity="center" />
+            <TextView android:padding="8dp" android:text="—" android:gravity="center" />
+        </TableRow>
+
+        <TableRow>
+            <TextView android:padding="8dp" android:text="—" android:gravity="center" />
+            <TextView android:padding="8dp" android:text="—" android:gravity="center" />
+            <TextView android:padding="8dp" android:text="—" android:gravity="center" />
+        </TableRow>
+
+        <TableRow android:background="#14808080">
+            <TextView android:padding="8dp" android:text="—" android:gravity="center" />
+            <TextView android:padding="8dp" android:text="—" android:gravity="center" />
+            <TextView android:padding="8dp" android:text="—" android:gravity="center" />
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

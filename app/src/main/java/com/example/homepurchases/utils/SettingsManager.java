@@ -16,6 +16,7 @@ public class SettingsManager {
 
     public static final int MODE_LIGHT  = 0;
     public static final int MODE_DARK   = 1;
+    public static final int MODE_AUTO   = 2;
 
     public static final int CURRENCY_NEW = 0;
     public static final int CURRENCY_OLD = 1;
@@ -25,7 +26,9 @@ public class SettingsManager {
     }
 
     public static int getThemeMode(Context context) {
-        return prefs(context).getInt(KEY_THEME_MODE, MODE_LIGHT);
+        SharedPreferences p = prefs(context);
+        if (!p.contains(KEY_THEME_MODE)) return MODE_AUTO;
+        return p.getInt(KEY_THEME_MODE, MODE_AUTO);
     }
 
     public static void saveThemeMode(Context context, int mode) {
